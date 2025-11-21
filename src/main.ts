@@ -1,6 +1,7 @@
 import '@material/web/button/filled-button.js';
 import '@material/web/button/outlined-button.js';
 import { Card, Deck, Player, Game } from './game';
+import { CardComponent } from './components';
 
 /**
  * Example implementation of a simple card game
@@ -71,15 +72,27 @@ document.addEventListener('DOMContentLoaded', () => {
       game.getPlayers().forEach(player => {
         infoHTML += `
           <div class="player-card">
-            <strong>${player.name}</strong><br>
-            Cards: ${player.handSize}<br>
-            Score: ${player.getScore()}
+            <strong>${player.name}</strong>
+            <div>Score: ${player.getScore()}</div>
+            <div class="cards-container" id="player-${player.id}-cards"></div>
           </div>
         `;
       });
       
       infoHTML += `<p>Cards remaining in deck: ${game.getDeck().size}</p>`;
       playerInfo.innerHTML = infoHTML;
+
+      // Render card components for each player
+      game.getPlayers().forEach(player => {
+        const cardsContainer = document.getElementById(`player-${player.id}-cards`);
+        if (cardsContainer) {
+          cardsContainer.innerHTML = ''; // Clear existing cards
+          player.getHand().forEach(card => {
+            const cardComponent = new CardComponent(card);
+            cardsContainer.appendChild(cardComponent.getElement());
+          });
+        }
+      });
 
       if (game.isGameOver()) {
         const winner = game.getWinner();
