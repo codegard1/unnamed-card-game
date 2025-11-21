@@ -55,6 +55,8 @@ export class CardComponent {
         return 'suit-clubs';
       case Suit.SPADES:
         return 'suit-spades';
+      default:
+        return 'suit-unknown';
     }
   }
 
@@ -71,6 +73,8 @@ export class CardComponent {
         return '♣';
       case Suit.SPADES:
         return '♠';
+      default:
+        return '?';
     }
   }
 
