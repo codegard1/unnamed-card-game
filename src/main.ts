@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // Set up settings dialog
   const settingsButton = document.getElementById('settings-button');
-  const settingsDialog = document.getElementById('settings-dialog') as any;
+  const settingsDialog = document.getElementById('settings-dialog') as HTMLElement & { show: () => void };
   const themeOptionsContainer = document.getElementById('theme-options');
   
   if (settingsButton && settingsDialog && themeOptionsContainer) {
@@ -70,12 +70,19 @@ document.addEventListener('DOMContentLoaded', () => {
         option.classList.add('selected');
       }
       
-      option.innerHTML = `
-        <div class="theme-info">
-          <h4>${theme.displayName}</h4>
-          <p>${theme.description}</p>
-        </div>
-      `;
+      // Create theme info structure safely
+      const themeInfo = document.createElement('div');
+      themeInfo.className = 'theme-info';
+      
+      const title = document.createElement('h4');
+      title.textContent = theme.displayName;
+      
+      const description = document.createElement('p');
+      description.textContent = theme.description;
+      
+      themeInfo.appendChild(title);
+      themeInfo.appendChild(description);
+      option.appendChild(themeInfo);
       
       option.addEventListener('click', () => {
         // Update selection

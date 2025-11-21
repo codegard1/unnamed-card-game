@@ -7,6 +7,7 @@
   <style>
     :root {
       --md-sys-color-primary: #6750A4;
+      --md-sys-color-primary-rgb: 103, 80, 164;
       --md-sys-color-surface: #FFFBFE;
       --md-sys-color-background: #FFFBFE;
       --md-sys-color-on-surface: #1C1B1F;
@@ -228,7 +229,7 @@
 
     .theme-option.selected {
       border-color: var(--md-sys-color-primary);
-      background: rgba(103, 80, 164, 0.08);
+      background: rgba(var(--md-sys-color-primary-rgb), 0.08);
     }
 
     .theme-info {
