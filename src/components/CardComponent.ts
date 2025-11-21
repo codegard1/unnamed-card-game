@@ -22,6 +22,10 @@ export class CardComponent {
     const suitClass = this.getSuitClass();
     cardDiv.classList.add(suitClass);
     
+    // Add data attribute for theming
+    cardDiv.setAttribute('data-suit', this.card.suit);
+    cardDiv.setAttribute('data-rank', this.card.rank);
+    
     // Create card content
     const rankTop = document.createElement('div');
     rankTop.className = 'card-rank top';

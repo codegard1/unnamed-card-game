@@ -1,7 +1,12 @@
 import '@material/web/button/filled-button.js';
 import '@material/web/button/outlined-button.js';
+import '@material/web/button/text-button.js';
+import '@material/web/iconbutton/icon-button.js';
+import '@material/web/icon/icon.js';
+import '@material/web/dialog/dialog.js';
 import { Card, Deck, Player, Game } from './game';
 import { CardComponent } from './components';
+import { SettingsManager, CARD_THEMES, CardTheme } from './settings';
 
 /**
  * Example implementation of a simple card game
@@ -46,6 +51,51 @@ class SimpleCardGame extends Game {
 // Initialize the application when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
   console.log('Unnamed Card Game - Initialized');
+  
+  // Initialize settings manager
+  const settings = SettingsManager.getInstance();
+  settings.initialize();
+  
+  // Set up settings dialog
+  const settingsButton = document.getElementById('settings-button');
+  const settingsDialog = document.getElementById('settings-dialog') as any;
+  const themeOptionsContainer = document.getElementById('theme-options');
+  
+  if (settingsButton && settingsDialog && themeOptionsContainer) {
+    // Populate theme options
+    CARD_THEMES.forEach(theme => {
+      const option = document.createElement('div');
+      option.className = 'theme-option';
+      if (theme.name === settings.getTheme()) {
+        option.classList.add('selected');
+      }
+      
+      option.innerHTML = `
+        <div class="theme-info">
+          <h4>${theme.displayName}</h4>
+          <p>${theme.description}</p>
+        </div>
+      `;
+      
+      option.addEventListener('click', () => {
+        // Update selection
+        themeOptionsContainer.querySelectorAll('.theme-option').forEach(opt => {
+          opt.classList.remove('selected');
+        });
+        option.classList.add('selected');
+        
+        // Apply theme
+        settings.setTheme(theme.name);
+      });
+      
+      themeOptionsContainer.appendChild(option);
+    });
+    
+    // Open settings dialog
+    settingsButton.addEventListener('click', () => {
+      settingsDialog.show();
+    });
+  }
   
   // Example: Create a simple game with two players
   const game = new SimpleCardGame(['Player 1', 'Player 2']);
