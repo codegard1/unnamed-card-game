@@ -1,0 +1,22 @@
+{
+  "name": "unnamed-card-game",
+  "version": "1.0.0",
+  "description": "Unnamed Card Game Project",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "typescript": "^5.9.3",
+    "vite": "^7.2.4"
+  },
+  "dependencies": {
+    "@material/web": "^2.4.1"
+  }
+}
