@@ -4,8 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Unnamed Card Game</title>
+  <title>Unnamed Card Game Web App v0.0.0.1</title>
   <link rel="stylesheet" href="/src/styles.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet" />
+
 </head>
 
 <body>
@@ -15,19 +17,8 @@
         <md-icon>settings</md-icon>
       </md-icon-button>
       <h1>🃏 Unnamed Card Game</h1>
-      <p class="subtitle">A TypeScript card game with Material Design 3</p>
+      <p class="subtitle">Hello, world!</p>
     </header>
-
-    <div class="game-controls">
-      <md-filled-button id="start-game">
-        Start New Game
-      </md-filled-button>
-    </div>
-
-    <div class="game-area">
-      <div id="game-status">Click "Start New Game" to begin</div>
-      <div id="player-info"></div>
-    </div>
 
     <!-- Blackjack Game Container -->
     <div id="blackjack-container" class="game-area"></div>
@@ -39,7 +30,7 @@
 
   <!-- Settings Dialog -->
   <md-dialog id="settings-dialog">
-    <div slot="headline">Settings</div>
+    <div slot="headline" id="settings-headline">Settings</div>
     <form slot="content" id="settings-form" method="dialog">
       <div class="settings-content">
         <div class="settings-section">

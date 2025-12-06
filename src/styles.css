@@ -109,6 +109,7 @@ footer {
 md-filled-button,
 md-outlined-button {
   margin: 4px;
+  padding: 1em;
 }
 
 /* Playing Card Component Styles */
@@ -191,9 +192,29 @@ md-dialog {
   --md-dialog-container-color: var(--md-sys-color-surface);
 }
 
+md-dialog#settings-dialog {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+div#settings-headline {
+  border-bottom: 1px solid #e0e0e0;
+  margin: 16px 0 0 16px;
+}
+
+div#actions>md-text-button {
+  margin: 0 16px 16px 0;
+}
+
 .settings-content {
   padding: 20px;
-  min-width: 300px;
+  min-width: 400px;
+}
+
+md-text-button {
+  padding: 1em;
 }
 
 .settings-section {
