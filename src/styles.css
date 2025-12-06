@@ -1,0 +1,627 @@
+:root {
+  --md-sys-color-primary: #6750A4;
+  --md-sys-color-primary-rgb: 103, 80, 164;
+  --md-sys-color-surface: #FFFBFE;
+  --md-sys-color-background: #FFFBFE;
+  --md-sys-color-on-surface: #1C1B1F;
+  --md-sys-color-on-background: #1C1B1F;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--md-sys-color-background);
+  color: var(--md-sys-color-on-background);
+  padding: 20px;
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 40px;
+  position: relative;
+}
+
+.settings-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  color: var(--md-sys-color-primary);
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  color: #666;
+}
+
+.game-controls {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.game-area {
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+#game-status {
+  font-size: 1.3rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+  color: var(--md-sys-color-primary);
+}
+
+#player-info {
+  margin-top: 20px;
+}
+
+#player-info h3 {
+  margin-bottom: 15px;
+  color: var(--md-sys-color-primary);
+}
+
+.player-card {
+  background: white;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  border-left: 4px solid var(--md-sys-color-primary);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.player-card strong {
+  font-size: 1.1rem;
+  color: var(--md-sys-color-primary);
+  display: block;
+  margin-bottom: 8px;
+}
+
+footer {
+  text-align: center;
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid #e0e0e0;
+  color: #666;
+}
+
+md-filled-button,
+md-outlined-button {
+  margin: 4px;
+}
+
+/* Playing Card Component Styles */
+.playing-card {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 80px;
+  height: 112px;
+  background: white;
+  border: 2px solid #333;
+  border-radius: 8px;
+  padding: 8px;
+  margin: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  font-family: 'Arial', sans-serif;
+  font-weight: bold;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.playing-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.card-rank {
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.card-rank.top {
+  align-self: flex-start;
+}
+
+.card-rank.bottom {
+  align-self: flex-end;
+  transform: rotate(180deg);
+}
+
+.card-suit {
+  font-size: 2.5rem;
+  text-align: center;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Suit colors */
+.suit-hearts,
+.suit-diamonds {
+  color: #e53935;
+}
+
+.suit-clubs,
+.suit-spades {
+  color: #212121;
+}
+
+/* Card container for displaying multiple cards */
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 10px 0;
+  padding: 10px;
+  background: #f5f5f5;
+  border-radius: 8px;
+  min-height: 50px;
+}
+
+.player-card .cards-container {
+  margin-top: 10px;
+}
+
+/* Settings Dialog Styles */
+md-dialog {
+  --md-dialog-container-color: var(--md-sys-color-surface);
+}
+
+.settings-content {
+  padding: 20px;
+  min-width: 300px;
+}
+
+.settings-section {
+  margin-bottom: 24px;
+}
+
+.settings-section h3 {
+  margin-bottom: 12px;
+  color: var(--md-sys-color-primary);
+  font-size: 1.1rem;
+}
+
+.theme-option {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.2s;
+}
+
+.theme-option:hover {
+  background: #f5f5f5;
+}
+
+.theme-option.selected {
+  border-color: var(--md-sys-color-primary);
+  background: rgba(var(--md-sys-color-primary-rgb), 0.08);
+}
+
+.theme-info {
+  flex: 1;
+}
+
+.theme-info h4 {
+  margin-bottom: 4px;
+  font-size: 1rem;
+}
+
+.theme-info p {
+  font-size: 0.875rem;
+  color: #666;
+}
+
+/* Theme-specific card styles */
+
+/* Classic Theme (default) */
+.theme-classic .playing-card {
+  background: white;
+  border: 2px solid #333;
+}
+
+/* Modern Theme */
+.theme-modern .playing-card {
+  background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%);
+  border: 3px solid #6750A4;
+  box-shadow: 0 4px 8px rgba(103, 80, 164, 0.2);
+}
+
+.theme-modern .suit-hearts,
+.theme-modern .suit-diamonds {
+  color: #ff1744;
+}
+
+.theme-modern .suit-clubs,
+.theme-modern .suit-spades {
+  color: #6750A4;
+}
+
+/* Minimal Theme */
+.theme-minimal .playing-card {
+  background: #fafafa;
+  border: 1px solid #e0e0e0;
+  box-shadow: none;
+}
+
+.theme-minimal .card-suit {
+  font-size: 2rem;
+}
+
+.theme-minimal .suit-hearts,
+.theme-minimal .suit-diamonds {
+  color: #9e9e9e;
+}
+
+.theme-minimal .suit-clubs,
+.theme-minimal .suit-spades {
+  color: #424242;
+}
+
+/* Blackjack Table Styles */
+.blackjack-table {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  grid-template-rows: auto auto 1fr auto;
+  gap: 20px;
+  min-height: 600px;
+}
+
+.blackjack-table .table-header {
+  grid-column: 1 / -1;
+  text-align: center;
+}
+
+.blackjack-table .table-header h1 {
+  font-size: 2rem;
+  color: var(--md-sys-color-primary);
+}
+
+.blackjack-table .message-area {
+  grid-column: 1;
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: 500;
+  padding: 16px;
+  background: #f5f5f5;
+  border-radius: 8px;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.blackjack-table .message-result {
+  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+  color: #2e7d32;
+}
+
+.blackjack-table .hands-container {
+  grid-column: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  background: linear-gradient(180deg, #1b5e20 0%, #2e7d32 50%, #1b5e20 100%);
+  border-radius: 16px;
+  min-height: 300px;
+}
+
+.blackjack-table .controls-area {
+  grid-column: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.blackjack-table .sidebar {
+  grid-column: 2;
+  grid-row: 2 / -1;
+}
+
+/* Player Hand Styles */
+.player-hand {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 16px;
+  transition: all 0.3s ease;
+}
+
+.player-hand.active {
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+.player-hand .hand-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  color: white;
+}
+
+.player-hand .player-name {
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.player-hand .hand-value {
+  font-weight: bold;
+  font-size: 1.25rem;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+.player-hand .hand-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.player-hand.status-busted .hand-header {
+  color: #ef5350;
+}
+
+.player-hand.status-winner .hand-header {
+  color: #66bb6a;
+}
+
+.player-hand.status-blackjack .hand-header {
+  color: #ffca28;
+}
+
+/* Face-down card */
+.playing-card.face-down {
+  background: linear-gradient(135deg, #1565c0 0%, #0d47a1 100%);
+  border-color: #0d47a1;
+}
+
+.playing-card.face-down .card-rank,
+.playing-card.face-down .card-suit {
+  visibility: hidden;
+}
+
+.playing-card.face-down::after {
+  content: '🂠';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 3rem;
+  color: white;
+}
+
+/* Card dealt animation */
+@keyframes cardDealt {
+  from {
+    transform: translateX(-100px) rotate(-10deg);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0) rotate(0);
+    opacity: 1;
+  }
+}
+
+.playing-card.card-dealt {
+  animation: cardDealt 0.3s ease-out;
+}
+
+/* Game Controls Styles */
+.game-controls {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.game-controls .control-group {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.game-controls .action-buttons {
+  border-right: 1px solid #e0e0e0;
+  padding-right: 16px;
+}
+
+/* Betting Panel Styles */
+.betting-panel {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.betting-stats {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 16px;
+}
+
+.betting-stats .stat {
+  text-align: center;
+}
+
+.betting-stats .stat-label {
+  font-size: 0.875rem;
+  color: #666;
+  display: block;
+}
+
+.betting-stats .stat-value {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: var(--md-sys-color-primary);
+}
+
+.betting-input-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+  align-items: flex-end;
+}
+
+.betting-input-row .bet-input {
+  flex: 1;
+}
+
+.quick-bet-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Player Selector Styles */
+.player-selector {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.player-selector .selector-header {
+  text-align: center;
+  margin-bottom: 20px;
+  color: var(--md-sys-color-primary);
+}
+
+.player-selector .player-list {
+  margin-bottom: 20px;
+}
+
+.player-selector .player-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.player-selector .player-item:hover {
+  background: #f5f5f5;
+}
+
+.player-selector .player-item.npc {
+  opacity: 0.8;
+}
+
+.player-selector .player-item label {
+  flex: 1;
+  cursor: pointer;
+}
+
+.player-selector .add-player-section {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+  align-items: flex-end;
+}
+
+.player-selector .add-player-input {
+  flex: 1;
+}
+
+.player-selector .start-game-button {
+  width: 100%;
+}
+
+/* Activity Log Styles */
+.activity-log-panel {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-height: 500px;
+}
+
+.activity-log-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.activity-log-header h3 {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--md-sys-color-primary);
+}
+
+.activity-log-header .clear-log-button {
+  background: none;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+.activity-log-header .clear-log-button:hover {
+  color: var(--md-sys-color-primary);
+}
+
+.activity-log-entries {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.activity-log-entries .log-entry {
+  display: flex;
+  gap: 8px;
+  padding: 6px 0;
+  font-size: 0.875rem;
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.activity-log-entries .log-timestamp {
+  color: #999;
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
+.activity-log-entries .log-message {
+  flex: 1;
+  color: #333;
+}
