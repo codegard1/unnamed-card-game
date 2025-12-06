@@ -4,8 +4,10 @@ import '@material/web/button/text-button.js';
 import '@material/web/iconbutton/icon-button.js';
 import '@material/web/icon/icon.js';
 import '@material/web/dialog/dialog.js';
+import '@material/web/textfield/outlined-text-field.js';
+import '@material/web/checkbox/checkbox.js';
 import { Card, Deck, Player, Game } from './game';
-import { CardComponent } from './components';
+import { CardComponent, BlackjackTable } from './components';
 import { SettingsManager, CARD_THEMES, CardTheme } from './settings';
 
 /**
@@ -51,16 +53,16 @@ class SimpleCardGame extends Game {
 // Initialize the application when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
   console.log('Unnamed Card Game - Initialized');
-  
+
   // Initialize settings manager
   const settings = SettingsManager.getInstance();
   settings.initialize();
-  
+
   // Set up settings dialog
   const settingsButton = document.getElementById('settings-button');
   const settingsDialog = document.getElementById('settings-dialog') as HTMLElement & { show: () => void };
   const themeOptionsContainer = document.getElementById('theme-options');
-  
+
   if (settingsButton && settingsDialog && themeOptionsContainer) {
     // Populate theme options
     CARD_THEMES.forEach(theme => {
@@ -69,44 +71,51 @@ document.addEventListener('DOMContentLoaded', () => {
       if (theme.name === settings.getTheme()) {
         option.classList.add('selected');
       }
-      
+
       // Create theme info structure safely
       const themeInfo = document.createElement('div');
       themeInfo.className = 'theme-info';
-      
+
       const title = document.createElement('h4');
       title.textContent = theme.displayName;
-      
+
       const description = document.createElement('p');
       description.textContent = theme.description;
-      
+
       themeInfo.appendChild(title);
       themeInfo.appendChild(description);
       option.appendChild(themeInfo);
-      
+
       option.addEventListener('click', () => {
         // Update selection
         themeOptionsContainer.querySelectorAll('.theme-option').forEach(opt => {
           opt.classList.remove('selected');
         });
         option.classList.add('selected');
-        
+
         // Apply theme
         settings.setTheme(theme.name);
       });
-      
+
       themeOptionsContainer.appendChild(option);
     });
-    
+
     // Open settings dialog
     settingsButton.addEventListener('click', () => {
       settingsDialog.show();
     });
   }
-  
-  // Example: Create a simple game with two players
+
+  // Initialize Blackjack Table
+  const blackjackContainer = document.getElementById('blackjack-container');
+  if (blackjackContainer) {
+    const blackjackTable = new BlackjackTable('#blackjack-container');
+    console.log('Blackjack table initialized');
+  }
+
+  // Example: Create a simple game with two players (original demo)
   const game = new SimpleCardGame(['Player 1', 'Player 2']);
-  
+
   // Set up UI event listeners
   const startButton = document.getElementById('start-game');
   const gameStatus = document.getElementById('game-status');
@@ -124,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (game.isActive()) {
       gameStatus.textContent = 'Game in progress...';
-      
+
       let infoHTML = '<h3>Players:</h3>';
       game.getPlayers().forEach(player => {
         infoHTML += `
@@ -135,7 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
         `;
       });
-      
+
       infoHTML += `<p>Cards remaining in deck: ${game.getDeck().size}</p>`;
       playerInfo.innerHTML = infoHTML;
 

@@ -133,6 +133,91 @@ class MyCardGame extends Game {
 - **Material Web Components 2.x**: Google's Material Design 3 implementation
 - **ES2020**: Modern JavaScript features
 
+## Blackjack Game (Merged from `blackjack` repository)
+
+The blackjack game was migrated from a separate React/Fluent UI/Create-React-App codebase into this vanilla TypeScript/Material Web architecture. The migration preserved multiplayer support, statistics persistence, and core game logic while adopting the new framework patterns.
+
+### Features Migrated
+
+- **Complete Blackjack Rules**: Hit, stand, double down, blackjack detection (21 with 2 cards), bust detection, dealer vs player evaluation
+- **Multiplayer Support**: Multiple human players can compete against the dealer with turn-based gameplay
+- **Statistics Persistence**: Player stats (games won/lost/played, busts, blackjacks, total winnings, win/loss ratio) saved to localStorage
+- **Activity Logging**: Game events logged and persisted for review
+- **Dealer AI**: Configurable NPC strategies (hit on ≤16, stand on 17+)
+
+### New Architecture Components
+
+**Game Logic (`src/game/`):**
+| File | Description |
+|------|-------------|
+| `BlackjackGame.ts` | Full blackjack implementation extending the abstract `Game` class |
+| `PlayerManager.ts` | Multiplayer orchestration, turn tracking, betting system |
+| `GameEventBus.ts` | EventTarget-based pub/sub system with typed events |
+| `NPCAgent.ts` | Dealer AI with pluggable strategies |
+| `enums/` | `GameStatus`, `PlayerAction`, `PlayerStatus` enums |
+
+**UI Components (`src/components/`):**
+| Component | Description |
+|-----------|-------------|
+| `BlackjackTable.ts` | Main game orchestrator connecting all UI pieces |
+| `PlayerHand.ts` | Displays player's cards with deal animations |
+| `GameControls.ts` | Hit/Stand/Double Down action buttons |
+| `BettingPanel.ts` | Bet input, quick bets, bank/pot display |
+| `PlayerSelector.ts` | Player selection before game start |
+| `ActivityLogPanel.ts` | Scrollable game event history |
+
+### Extended Base Classes
+
+The `Player` class was extended with blackjack-specific properties:
+- `isNPC`, `bank`, `stats` - Player type and financial tracking
+- `turn`, `isFinished`, `lastAction`, `status` - Turn state management
+- `currentBet`, `lastBet`, `totalBet` - Betting system
+- `recordWin()`, `recordLoss()`, `recordBust()`, `recordBlackjack()` - Statistics tracking
+- `toJSON()` / `fromJSON()` - Serialization for persistence
+
+### Event-Driven Architecture
+
+The game uses an `EventTarget`-based pub/sub pattern for loose coupling between game logic and UI:
+
+```typescript
+import { gameEventBus, GameEventType } from './game';
+
+// Subscribe to events
+gameEventBus.on(GameEventType.TurnChange, (event) => {
+  console.log(`${event.detail.currentPlayer.name}'s turn`);
+});
+
+// Emit events
+gameEventBus.emit(GameEventType.StateChange, {
+  gameStatus: GameStatus.InProgress,
+  round: 1,
+  pot: 100,
+});
+```
+
+### Usage Example
+
+```typescript
+import { BlackjackGame, NPCAgent } from './game';
+import { BlackjackTable } from './components';
+
+// Option 1: Use the full UI component
+const table = new BlackjackTable('#game-container');
+
+// Option 2: Use game logic directly
+const game = new BlackjackGame({
+  playerNames: ['Alice', 'Bob'],
+  minimumBet: 25,
+});
+
+const agent = new NPCAgent();
+agent.attachToGame(game);
+
+game.start();
+game.hit('player-0');  // Alice hits
+game.stand('player-0'); // Alice stands
+```
+
 ## License
 
 ISC

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -113,7 +114,8 @@
       color: #666;
     }
 
-    md-filled-button, md-outlined-button {
+    md-filled-button,
+    md-outlined-button {
       margin: 4px;
     }
 
@@ -247,7 +249,7 @@
     }
 
     /* Theme-specific card styles */
-    
+
     /* Classic Theme (default) */
     .theme-classic .playing-card {
       background: white;
@@ -291,8 +293,349 @@
     .theme-minimal .suit-spades {
       color: #424242;
     }
+
+    /* Blackjack Table Styles */
+    .blackjack-table {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      grid-template-rows: auto auto 1fr auto;
+      gap: 20px;
+      min-height: 600px;
+    }
+
+    .blackjack-table .table-header {
+      grid-column: 1 / -1;
+      text-align: center;
+    }
+
+    .blackjack-table .table-header h1 {
+      font-size: 2rem;
+      color: var(--md-sys-color-primary);
+    }
+
+    .blackjack-table .message-area {
+      grid-column: 1;
+      text-align: center;
+      font-size: 1.25rem;
+      font-weight: 500;
+      padding: 16px;
+      background: #f5f5f5;
+      border-radius: 8px;
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .blackjack-table .message-result {
+      background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+      color: #2e7d32;
+    }
+
+    .blackjack-table .hands-container {
+      grid-column: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      padding: 20px;
+      background: linear-gradient(180deg, #1b5e20 0%, #2e7d32 50%, #1b5e20 100%);
+      border-radius: 16px;
+      min-height: 300px;
+    }
+
+    .blackjack-table .controls-area {
+      grid-column: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .blackjack-table .sidebar {
+      grid-column: 2;
+      grid-row: 2 / -1;
+    }
+
+    /* Player Hand Styles */
+    .player-hand {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 16px;
+      transition: all 0.3s ease;
+    }
+
+    .player-hand.active {
+      background: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+    }
+
+    .player-hand .hand-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      color: white;
+    }
+
+    .player-hand .player-name {
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+
+    .player-hand .hand-value {
+      font-weight: bold;
+      font-size: 1.25rem;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 4px 12px;
+      border-radius: 20px;
+    }
+
+    .player-hand .hand-cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .player-hand.status-busted .hand-header {
+      color: #ef5350;
+    }
+
+    .player-hand.status-winner .hand-header {
+      color: #66bb6a;
+    }
+
+    .player-hand.status-blackjack .hand-header {
+      color: #ffca28;
+    }
+
+    /* Face-down card */
+    .playing-card.face-down {
+      background: linear-gradient(135deg, #1565c0 0%, #0d47a1 100%);
+      border-color: #0d47a1;
+    }
+
+    .playing-card.face-down .card-rank,
+    .playing-card.face-down .card-suit {
+      visibility: hidden;
+    }
+
+    .playing-card.face-down::after {
+      content: '🂠';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 3rem;
+      color: white;
+    }
+
+    /* Card dealt animation */
+    @keyframes cardDealt {
+      from {
+        transform: translateX(-100px) rotate(-10deg);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateX(0) rotate(0);
+        opacity: 1;
+      }
+    }
+
+    .playing-card.card-dealt {
+      animation: cardDealt 0.3s ease-out;
+    }
+
+    /* Game Controls Styles */
+    .game-controls {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+
+    .game-controls .control-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .game-controls .action-buttons {
+      border-right: 1px solid #e0e0e0;
+      padding-right: 16px;
+    }
+
+    /* Betting Panel Styles */
+    .betting-panel {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .betting-stats {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 16px;
+    }
+
+    .betting-stats .stat {
+      text-align: center;
+    }
+
+    .betting-stats .stat-label {
+      font-size: 0.875rem;
+      color: #666;
+      display: block;
+    }
+
+    .betting-stats .stat-value {
+      font-size: 1.25rem;
+      font-weight: bold;
+      color: var(--md-sys-color-primary);
+    }
+
+    .betting-input-row {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 12px;
+      align-items: flex-end;
+    }
+
+    .betting-input-row .bet-input {
+      flex: 1;
+    }
+
+    .quick-bet-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    /* Player Selector Styles */
+    .player-selector {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    .player-selector .selector-header {
+      text-align: center;
+      margin-bottom: 20px;
+      color: var(--md-sys-color-primary);
+    }
+
+    .player-selector .player-list {
+      margin-bottom: 20px;
+    }
+
+    .player-selector .player-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      border-radius: 8px;
+      transition: background 0.2s;
+    }
+
+    .player-selector .player-item:hover {
+      background: #f5f5f5;
+    }
+
+    .player-selector .player-item.npc {
+      opacity: 0.8;
+    }
+
+    .player-selector .player-item label {
+      flex: 1;
+      cursor: pointer;
+    }
+
+    .player-selector .add-player-section {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 20px;
+      align-items: flex-end;
+    }
+
+    .player-selector .add-player-input {
+      flex: 1;
+    }
+
+    .player-selector .start-game-button {
+      width: 100%;
+    }
+
+    /* Activity Log Styles */
+    .activity-log-panel {
+      background: white;
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      max-height: 500px;
+    }
+
+    .activity-log-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .activity-log-header h3 {
+      margin: 0;
+      font-size: 1rem;
+      color: var(--md-sys-color-primary);
+    }
+
+    .activity-log-header .clear-log-button {
+      background: none;
+      border: none;
+      color: #666;
+      cursor: pointer;
+      font-size: 0.875rem;
+    }
+
+    .activity-log-header .clear-log-button:hover {
+      color: var(--md-sys-color-primary);
+    }
+
+    .activity-log-entries {
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .activity-log-entries .log-entry {
+      display: flex;
+      gap: 8px;
+      padding: 6px 0;
+      font-size: 0.875rem;
+      border-bottom: 1px solid #f5f5f5;
+    }
+
+    .activity-log-entries .log-timestamp {
+      color: #999;
+      font-size: 0.75rem;
+      white-space: nowrap;
+    }
+
+    .activity-log-entries .log-message {
+      flex: 1;
+      color: #333;
+    }
   </style>
 </head>
+
 <body>
   <div class="container">
     <header>
@@ -313,6 +656,9 @@
       <div id="game-status">Click "Start New Game" to begin</div>
       <div id="player-info"></div>
     </div>
+
+    <!-- Blackjack Game Container -->
+    <div id="blackjack-container" class="game-area"></div>
 
     <footer>
       <p>Built with TypeScript and Google Material Design 3 (Material Web Components)</p>
@@ -337,4 +683,5 @@
 
   <script type="module" src="/src/main.ts"></script>
 </body>
+
 </html>

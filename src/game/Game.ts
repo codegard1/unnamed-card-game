@@ -22,7 +22,7 @@ export abstract class Game {
    */
   private initializePlayers(playerNames: string[]): void {
     playerNames.forEach((name, index) => {
-      this.players.push(new Player(`player-${index}`, name));
+      this.players.push(Player.create(`player-${index}`, name));
     });
   }
 
