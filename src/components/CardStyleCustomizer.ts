@@ -22,7 +22,7 @@ export class CardStyleCustomizer {
   private onCancelCallback?: () => void;
 
   constructor() {
-    this.currentStyle = JSON.parse(JSON.stringify(DEFAULT_CARD_STYLE));
+    this.currentStyle = structuredClone(DEFAULT_CARD_STYLE);
     this.container = this.createUI();
     
     // Create preview cards
@@ -34,7 +34,7 @@ export class CardStyleCustomizer {
    * Sets the current card style for editing
    */
   setStyle(style: CardStyleConfig): void {
-    this.currentStyle = JSON.parse(JSON.stringify(style));
+    this.currentStyle = structuredClone(style);
     this.updatePreview();
     this.updateFormValues();
   }
