@@ -196,7 +196,8 @@ export class SettingsManager {
       root.style.setProperty('--card-back-bg', style.back.backgroundColor);
     } else if (style.back.backgroundType === 'gradient' && style.back.gradient) {
       const gradient = style.back.gradient;
-      const colors = gradient.colors.filter(c => c); // Filter out empty strings
+      // Filter out empty/undefined color values to prevent invalid CSS
+      const colors = gradient.colors.filter(c => c);
       const gradientStr = gradient.type === 'linear'
         ? `linear-gradient(${gradient.angle || 135}deg, ${colors.join(', ')})`
         : `radial-gradient(circle, ${colors.join(', ')})`;

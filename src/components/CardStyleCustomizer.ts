@@ -61,6 +61,22 @@ export class CardStyleCustomizer {
   }
 
   /**
+   * Ensures gradient configuration exists on the current style
+   */
+  private ensureGradientExists(): void {
+    if (!this.currentStyle.back.gradient) {
+      this.currentStyle.back.gradient = { type: 'linear', colors: ['', '', ''] };
+    }
+  }
+
+  /**
+   * Filters and returns only valid (non-empty) color values
+   */
+  private getValidColors(colors: string[]): string[] {
+    return colors.filter(c => c);
+  }
+
+  /**
    * Creates the UI for the customizer
    */
   private createUI(): HTMLElement {
@@ -284,42 +300,32 @@ export class CardStyleCustomizer {
 
     // Back gradient controls
     this.addInputListener(container, 'gradient-type', (value) => {
-      if (!this.currentStyle.back.gradient) {
-        this.currentStyle.back.gradient = { type: 'linear', colors: [] };
-      }
-      this.currentStyle.back.gradient.type = value as 'linear' | 'radial';
+      this.ensureGradientExists();
+      this.currentStyle.back.gradient!.type = value as 'linear' | 'radial';
       this.updatePreview();
     });
 
     this.addInputListener(container, 'gradient-angle', (value) => {
-      if (!this.currentStyle.back.gradient) {
-        this.currentStyle.back.gradient = { type: 'linear', colors: [] };
-      }
-      this.currentStyle.back.gradient.angle = parseFloat(value);
+      this.ensureGradientExists();
+      this.currentStyle.back.gradient!.angle = parseFloat(value);
       this.updatePreview();
     });
 
     this.addInputListener(container, 'gradient-color-1', (value) => {
-      if (!this.currentStyle.back.gradient) {
-        this.currentStyle.back.gradient = { type: 'linear', colors: ['', '', ''] };
-      }
-      this.currentStyle.back.gradient.colors[0] = value;
+      this.ensureGradientExists();
+      this.currentStyle.back.gradient!.colors[0] = value;
       this.updatePreview();
     });
 
     this.addInputListener(container, 'gradient-color-2', (value) => {
-      if (!this.currentStyle.back.gradient) {
-        this.currentStyle.back.gradient = { type: 'linear', colors: ['', '', ''] };
-      }
-      this.currentStyle.back.gradient.colors[1] = value;
+      this.ensureGradientExists();
+      this.currentStyle.back.gradient!.colors[1] = value;
       this.updatePreview();
     });
 
     this.addInputListener(container, 'gradient-color-3', (value) => {
-      if (!this.currentStyle.back.gradient) {
-        this.currentStyle.back.gradient = { type: 'linear', colors: ['', '', ''] };
-      }
-      this.currentStyle.back.gradient.colors[2] = value;
+      this.ensureGradientExists();
+      this.currentStyle.back.gradient!.colors[2] = value;
       this.updatePreview();
     });
 
@@ -493,9 +499,10 @@ export class CardStyleCustomizer {
         element.style.background = this.currentStyle.back.backgroundColor;
       } else if (this.currentStyle.back.backgroundType === BackgroundType.GRADIENT && this.currentStyle.back.gradient) {
         const gradient = this.currentStyle.back.gradient;
+        const validColors = this.getValidColors(gradient.colors);
         const gradientStr = gradient.type === 'linear'
-          ? `linear-gradient(${gradient.angle || 135}deg, ${gradient.colors.filter(c => c).join(', ')})`
-          : `radial-gradient(circle, ${gradient.colors.filter(c => c).join(', ')})`;
+          ? `linear-gradient(${gradient.angle || 135}deg, ${validColors.join(', ')})`
+          : `radial-gradient(circle, ${validColors.join(', ')})`;
         element.style.background = gradientStr;
       } else if (this.currentStyle.back.backgroundType === BackgroundType.IMAGE && this.currentStyle.back.imageUrl) {
         element.style.background = `url(${this.currentStyle.back.imageUrl}) center/cover`;
