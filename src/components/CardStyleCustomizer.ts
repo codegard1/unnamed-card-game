@@ -84,123 +84,129 @@ export class CardStyleCustomizer {
     container.className = 'card-style-customizer';
     container.innerHTML = `
       <div class="customizer-content">
-        <!-- Preset Selection -->
-        <div class="customizer-section">
-          <h3>Presets</h3>
-          <div class="preset-buttons" id="preset-buttons"></div>
-        </div>
+        <!-- Left Column -->
+        <div class="customizer-left-column">
+          <!-- Preset Selection -->
+          <div class="customizer-section">
+            <h3>Presets</h3>
+            <div class="preset-buttons" id="preset-buttons"></div>
+          </div>
 
-        <!-- Live Preview -->
-        <div class="customizer-section">
-          <h3>Live Preview</h3>
-          <div class="preview-container">
-            <div class="preview-card-container">
-              <label>Front</label>
-              <div id="preview-front"></div>
+          <!-- Live Preview -->
+          <div class="customizer-section">
+            <h3>Live Preview</h3>
+            <div class="preview-container">
+              <div class="preview-card-container">
+                <label>Front</label>
+                <div id="preview-front"></div>
+              </div>
+              <div class="preview-card-container">
+                <label>Back</label>
+                <div id="preview-back"></div>
+              </div>
             </div>
-            <div class="preview-card-container">
-              <label>Back</label>
-              <div id="preview-back"></div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="customizer-actions">
+            <md-outlined-button id="cancel-btn">Cancel</md-outlined-button>
+            <md-filled-button id="save-btn">Save & Apply</md-filled-button>
+          </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="customizer-right-column">
+          <!-- Front Style Controls -->
+          <div class="customizer-section">
+            <h3>Front Face Style</h3>
+            <div class="control-group">
+              <label>Background Color</label>
+              <input type="color" id="front-bg-color" class="color-input" />
+            </div>
+            <div class="control-group">
+              <label>Border Color</label>
+              <input type="color" id="front-border-color" class="color-input" />
+            </div>
+            <div class="control-group">
+              <label>Border Width (px)</label>
+              <input type="number" id="front-border-width" min="0" max="10" step="1" />
+            </div>
+            <div class="control-group">
+              <label>Border Radius (px)</label>
+              <input type="number" id="front-border-radius" min="0" max="20" step="1" />
             </div>
           </div>
-        </div>
 
-        <!-- Front Style Controls -->
-        <div class="customizer-section">
-          <h3>Front Face Style</h3>
-          <div class="control-group">
-            <label>Background Color</label>
-            <input type="color" id="front-bg-color" class="color-input" />
+          <!-- Symbol Style Controls -->
+          <div class="customizer-section">
+            <h3>Symbol Styles</h3>
+            <div class="control-group">
+              <label>♥ Hearts Color</label>
+              <input type="color" id="heart-color" class="color-input" />
+            </div>
+            <div class="control-group">
+              <label>♦ Diamonds Color</label>
+              <input type="color" id="diamond-color" class="color-input" />
+            </div>
+            <div class="control-group">
+              <label>♣ Clubs Color</label>
+              <input type="color" id="club-color" class="color-input" />
+            </div>
+            <div class="control-group">
+              <label>♠ Spades Color</label>
+              <input type="color" id="spade-color" class="color-input" />
+            </div>
+            <div class="control-group">
+              <label>Symbol Size (rem)</label>
+              <input type="number" id="symbol-size" min="1" max="5" step="0.1" />
+            </div>
           </div>
-          <div class="control-group">
-            <label>Border Color</label>
-            <input type="color" id="front-border-color" class="color-input" />
-          </div>
-          <div class="control-group">
-            <label>Border Width (px)</label>
-            <input type="number" id="front-border-width" min="0" max="10" step="1" />
-          </div>
-          <div class="control-group">
-            <label>Border Radius (px)</label>
-            <input type="number" id="front-border-radius" min="0" max="20" step="1" />
-          </div>
-        </div>
 
-        <!-- Symbol Style Controls -->
-        <div class="customizer-section">
-          <h3>Symbol Styles</h3>
-          <div class="control-group">
-            <label>♥ Hearts Color</label>
-            <input type="color" id="heart-color" class="color-input" />
+          <!-- Back Style Controls -->
+          <div class="customizer-section">
+            <h3>Back Face Style</h3>
+            <div class="control-group">
+              <label>Background Type</label>
+              <select id="back-bg-type">
+                <option value="solid">Solid Color</option>
+                <option value="gradient">Gradient</option>
+                <option value="image">Custom Image</option>
+              </select>
+            </div>
+            <div class="control-group" id="back-solid-controls">
+              <label>Background Color</label>
+              <input type="color" id="back-bg-color" class="color-input" />
+            </div>
+            <div class="control-group" id="back-gradient-controls" style="display: none;">
+              <label>Gradient Type</label>
+              <select id="gradient-type">
+                <option value="linear">Linear</option>
+                <option value="radial">Radial</option>
+              </select>
+              <label>Gradient Angle (deg)</label>
+              <input type="number" id="gradient-angle" min="0" max="360" step="15" value="135" />
+              <label>Gradient Color 1</label>
+              <input type="color" id="gradient-color-1" class="color-input" />
+              <label>Gradient Color 2</label>
+              <input type="color" id="gradient-color-2" class="color-input" />
+              <label>Gradient Color 3 (optional)</label>
+              <input type="color" id="gradient-color-3" class="color-input" />
+            </div>
+            <div class="control-group" id="back-image-controls" style="display: none;">
+              <label>Image URL</label>
+              <input type="text" id="back-image-url" placeholder="https://example.com/image.jpg" />
+              <p class="hint">Or upload a file:</p>
+              <input type="file" id="back-image-file" accept="image/*" />
+            </div>
+            <div class="control-group">
+              <label>Border Color</label>
+              <input type="color" id="back-border-color" class="color-input" />
+            </div>
+            <div class="control-group">
+              <label>Border Width (px)</label>
+              <input type="number" id="back-border-width" min="0" max="10" step="1" />
+            </div>
           </div>
-          <div class="control-group">
-            <label>♦ Diamonds Color</label>
-            <input type="color" id="diamond-color" class="color-input" />
-          </div>
-          <div class="control-group">
-            <label>♣ Clubs Color</label>
-            <input type="color" id="club-color" class="color-input" />
-          </div>
-          <div class="control-group">
-            <label>♠ Spades Color</label>
-            <input type="color" id="spade-color" class="color-input" />
-          </div>
-          <div class="control-group">
-            <label>Symbol Size (rem)</label>
-            <input type="number" id="symbol-size" min="1" max="5" step="0.1" />
-          </div>
-        </div>
-
-        <!-- Back Style Controls -->
-        <div class="customizer-section">
-          <h3>Back Face Style</h3>
-          <div class="control-group">
-            <label>Background Type</label>
-            <select id="back-bg-type">
-              <option value="solid">Solid Color</option>
-              <option value="gradient">Gradient</option>
-              <option value="image">Custom Image</option>
-            </select>
-          </div>
-          <div class="control-group" id="back-solid-controls">
-            <label>Background Color</label>
-            <input type="color" id="back-bg-color" class="color-input" />
-          </div>
-          <div class="control-group" id="back-gradient-controls" style="display: none;">
-            <label>Gradient Type</label>
-            <select id="gradient-type">
-              <option value="linear">Linear</option>
-              <option value="radial">Radial</option>
-            </select>
-            <label>Gradient Angle (deg)</label>
-            <input type="number" id="gradient-angle" min="0" max="360" step="15" value="135" />
-            <label>Gradient Color 1</label>
-            <input type="color" id="gradient-color-1" class="color-input" />
-            <label>Gradient Color 2</label>
-            <input type="color" id="gradient-color-2" class="color-input" />
-            <label>Gradient Color 3 (optional)</label>
-            <input type="color" id="gradient-color-3" class="color-input" />
-          </div>
-          <div class="control-group" id="back-image-controls" style="display: none;">
-            <label>Image URL</label>
-            <input type="text" id="back-image-url" placeholder="https://example.com/image.jpg" />
-            <p class="hint">Or upload a file:</p>
-            <input type="file" id="back-image-file" accept="image/*" />
-          </div>
-          <div class="control-group">
-            <label>Border Color</label>
-            <input type="color" id="back-border-color" class="color-input" />
-          </div>
-          <div class="control-group">
-            <label>Border Width (px)</label>
-            <input type="number" id="back-border-width" min="0" max="10" step="1" />
-          </div>
-        </div>
-
-        <!-- Action Buttons -->
-        <div class="customizer-actions">
-          <md-outlined-button id="cancel-btn">Cancel</md-outlined-button>
-          <md-filled-button id="save-btn">Save & Apply</md-filled-button>
         </div>
       </div>
     `;
