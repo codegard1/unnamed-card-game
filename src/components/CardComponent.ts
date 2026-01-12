@@ -6,8 +6,10 @@ import { Card, Suit } from '../game';
  */
 export class CardComponent {
   private element: HTMLElement;
+  private showingBack: boolean = false;
 
-  constructor(private card: Card) {
+  constructor(private card: Card, showBack: boolean = false) {
+    this.showingBack = showBack;
     this.element = this.createCardElement();
   }
 
@@ -16,32 +18,40 @@ export class CardComponent {
    */
   private createCardElement(): HTMLElement {
     const cardDiv = document.createElement('div');
-    cardDiv.className = 'playing-card';
+    cardDiv.className = this.showingBack ? 'playing-card card-back' : 'playing-card';
     
-    // Add suit-specific class for coloring
-    const suitClass = this.getSuitClass();
-    cardDiv.classList.add(suitClass);
-    
-    // Add data attribute for theming
-    cardDiv.setAttribute('data-suit', this.card.suit);
-    cardDiv.setAttribute('data-rank', this.card.rank);
-    
-    // Create card content
-    const rankTop = document.createElement('div');
-    rankTop.className = 'card-rank top';
-    rankTop.textContent = this.card.rank;
-    
-    const suitSymbol = document.createElement('div');
-    suitSymbol.className = 'card-suit';
-    suitSymbol.textContent = this.getSuitSymbol();
-    
-    const rankBottom = document.createElement('div');
-    rankBottom.className = 'card-rank bottom';
-    rankBottom.textContent = this.card.rank;
-    
-    cardDiv.appendChild(rankTop);
-    cardDiv.appendChild(suitSymbol);
-    cardDiv.appendChild(rankBottom);
+    if (this.showingBack) {
+      // Create card back
+      const backContent = document.createElement('div');
+      backContent.className = 'card-back-content';
+      cardDiv.appendChild(backContent);
+    } else {
+      // Create card front
+      // Add suit-specific class for coloring
+      const suitClass = this.getSuitClass();
+      cardDiv.classList.add(suitClass);
+      
+      // Add data attribute for theming
+      cardDiv.setAttribute('data-suit', this.card.suit);
+      cardDiv.setAttribute('data-rank', this.card.rank);
+      
+      // Create card content
+      const rankTop = document.createElement('div');
+      rankTop.className = 'card-rank top';
+      rankTop.textContent = this.card.rank;
+      
+      const suitSymbol = document.createElement('div');
+      suitSymbol.className = 'card-suit';
+      suitSymbol.textContent = this.getSuitSymbol();
+      
+      const rankBottom = document.createElement('div');
+      rankBottom.className = 'card-rank bottom';
+      rankBottom.textContent = this.card.rank;
+      
+      cardDiv.appendChild(rankTop);
+      cardDiv.appendChild(suitSymbol);
+      cardDiv.appendChild(rankBottom);
+    }
     
     return cardDiv;
   }
@@ -94,5 +104,22 @@ export class CardComponent {
    */
   getCard(): Card {
     return this.card;
+  }
+
+  /**
+   * Flips the card to show front or back
+   */
+  flip(showBack: boolean = !this.showingBack): void {
+    this.showingBack = showBack;
+    const newElement = this.createCardElement();
+    this.element.replaceWith(newElement);
+    this.element = newElement;
+  }
+
+  /**
+   * Returns whether the card is showing its back
+   */
+  isShowingBack(): boolean {
+    return this.showingBack;
   }
 }

@@ -5,7 +5,7 @@ import '@material/web/iconbutton/icon-button.js';
 import '@material/web/icon/icon.js';
 import '@material/web/dialog/dialog.js';
 import { Card, Deck, Player, Game } from './game';
-import { CardComponent } from './components';
+import { CardComponent, CardStyleCustomizer } from './components';
 import { SettingsManager, CARD_THEMES, CardTheme } from './settings';
 
 /**
@@ -101,6 +101,36 @@ document.addEventListener('DOMContentLoaded', () => {
     // Open settings dialog
     settingsButton.addEventListener('click', () => {
       settingsDialog.show();
+    });
+  }
+
+  // Set up Card Style Customizer
+  const customizeCardsButton = document.getElementById('customize-cards-button');
+  const cardStyleDialog = document.getElementById('card-style-dialog') as HTMLElement & { show: () => void; close: () => void };
+  const cardStyleCustomizerContainer = document.getElementById('card-style-customizer-container');
+
+  if (customizeCardsButton && cardStyleDialog && cardStyleCustomizerContainer) {
+    const customizer = new CardStyleCustomizer();
+    
+    // Set up callbacks
+    customizer.onSave((style) => {
+      settings.setCardStyle(style);
+      cardStyleDialog.close();
+    });
+
+    customizer.onCancel(() => {
+      cardStyleDialog.close();
+    });
+
+    // Add customizer to dialog
+    cardStyleCustomizerContainer.appendChild(customizer.getElement());
+
+    // Open card style customizer dialog
+    customizeCardsButton.addEventListener('click', () => {
+      // Load current style
+      customizer.setStyle(settings.getCardStyle());
+      customizer.initialize();
+      cardStyleDialog.show();
     });
   }
   

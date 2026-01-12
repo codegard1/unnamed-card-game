@@ -12,6 +12,24 @@
       --md-sys-color-background: #FFFBFE;
       --md-sys-color-on-surface: #1C1B1F;
       --md-sys-color-on-background: #1C1B1F;
+
+      /* Card style custom properties - defaults */
+      --card-front-bg: #ffffff;
+      --card-front-border-color: #333333;
+      --card-front-border-width: 2px;
+      --card-front-border-radius: 8px;
+      --card-corner-font-size: 1.2rem;
+      --card-center-font-size: 2.5rem;
+      --card-heart-color: #e53935;
+      --card-diamond-color: #e53935;
+      --card-club-color: #212121;
+      --card-spade-color: #212121;
+      --card-symbol-font-weight: normal;
+      --card-back-bg: linear-gradient(135deg, #1e3c72, #2a5298, #1e3c72);
+      --card-back-border-color: #333333;
+      --card-back-border-width: 2px;
+      --card-back-border-radius: 8px;
+      --card-back-bg-size: auto;
     }
 
     * {
@@ -124,14 +142,14 @@
       justify-content: space-between;
       width: 80px;
       height: 112px;
-      background: white;
-      border: 2px solid #333;
-      border-radius: 8px;
+      background: var(--card-front-bg);
+      border: var(--card-front-border-width) solid var(--card-front-border-color);
+      border-radius: var(--card-front-border-radius);
       padding: 8px;
       margin: 4px;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
       font-family: 'Arial', sans-serif;
-      font-weight: bold;
+      font-weight: var(--card-symbol-font-weight);
       position: relative;
       cursor: pointer;
       transition: transform 0.2s, box-shadow 0.2s;
@@ -143,7 +161,7 @@
     }
 
     .card-rank {
-      font-size: 1.2rem;
+      font-size: var(--card-corner-font-size);
       line-height: 1;
     }
 
@@ -157,7 +175,7 @@
     }
 
     .card-suit {
-      font-size: 2.5rem;
+      font-size: var(--card-center-font-size);
       text-align: center;
       flex: 1;
       display: flex;
@@ -165,15 +183,37 @@
       justify-content: center;
     }
 
-    /* Suit colors */
-    .suit-hearts,
-    .suit-diamonds {
-      color: #e53935;
+    /* Suit colors using CSS variables */
+    .suit-hearts {
+      color: var(--card-heart-color);
     }
 
-    .suit-clubs,
+    .suit-diamonds {
+      color: var(--card-diamond-color);
+    }
+
+    .suit-clubs {
+      color: var(--card-club-color);
+    }
+
     .suit-spades {
-      color: #212121;
+      color: var(--card-spade-color);
+    }
+
+    /* Card back styles */
+    .playing-card.card-back {
+      background: var(--card-back-bg);
+      background-size: var(--card-back-bg-size);
+      border: var(--card-back-border-width) solid var(--card-back-border-color);
+      border-radius: var(--card-back-border-radius);
+    }
+
+    .card-back-content {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     /* Card container for displaying multiple cards */
@@ -195,6 +235,20 @@
     /* Settings Dialog Styles */
     md-dialog {
       --md-dialog-container-color: var(--md-sys-color-surface);
+    }
+
+    /* Card Style Dialog - Full Screen */
+    #card-style-dialog {
+      --md-dialog-container-max-inline-size: 90vw;
+      --md-dialog-container-max-block-size: 90vh;
+      --md-dialog-container-min-inline-size: 800px;
+    }
+
+    @media (max-width: 900px) {
+      #card-style-dialog {
+        --md-dialog-container-max-inline-size: 95vw;
+        --md-dialog-container-min-inline-size: auto;
+      }
     }
 
     .settings-content {
@@ -244,6 +298,155 @@
     .theme-info p {
       font-size: 0.875rem;
       color: #666;
+    }
+
+    /* Card Style Customizer Styles */
+    .card-style-customizer {
+      width: 100%;
+      max-height: 75vh;
+      overflow-y: auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    @media (max-width: 1200px) {
+      .card-style-customizer {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .customizer-content {
+      padding: 20px;
+      display: contents;
+    }
+
+    .customizer-left-column {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .customizer-right-column {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .customizer-section {
+      margin-bottom: 0;
+      padding: 20px;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      background: #fafafa;
+    }
+
+    .customizer-section:last-of-type {
+      border-bottom: none;
+    }
+
+    .customizer-section h3 {
+      margin-bottom: 16px;
+      color: var(--md-sys-color-primary);
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    .control-group {
+      margin-bottom: 16px;
+    }
+
+    .control-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      font-size: 0.9rem;
+      color: #333;
+    }
+
+    .control-group input[type="color"],
+    .control-group input[type="number"],
+    .control-group input[type="text"],
+    .control-group select {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+    }
+
+    .control-group input[type="color"] {
+      height: 40px;
+      cursor: pointer;
+    }
+
+    .control-group input[type="file"] {
+      width: 100%;
+      padding: 8px;
+      font-size: 0.9rem;
+    }
+
+    .control-group .hint {
+      font-size: 0.8rem;
+      color: #666;
+      margin: 4px 0;
+    }
+
+    .preset-buttons {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .preview-container {
+      display: flex;
+      gap: 32px;
+      justify-content: center;
+      align-items: center;
+      padding: 32px;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      border-radius: 12px;
+      min-height: 220px;
+    }
+
+    .preview-card-container {
+      text-align: center;
+    }
+
+    .preview-card-container label {
+      display: block;
+      margin-bottom: 16px;
+      font-weight: 600;
+      font-size: 1rem;
+      color: #333;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Scale up preview cards */
+    .preview-card-container .playing-card {
+      width: 120px;
+      height: 168px;
+      font-size: 1.5em;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    .preview-card-container .card-rank {
+      font-size: 1.8rem;
+    }
+
+    .preview-card-container .card-suit {
+      font-size: 3.75rem;
+    }
+
+    .customizer-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid #e0e0e0;
     }
 
     /* Theme-specific card styles */
@@ -328,11 +531,24 @@
           <h3>Card Theme</h3>
           <div id="theme-options"></div>
         </div>
+        <div class="settings-section">
+          <h3>Card Styles</h3>
+          <md-filled-button id="customize-cards-button">
+            Customize Card Appearance
+          </md-filled-button>
+        </div>
       </div>
     </form>
     <div slot="actions">
       <md-text-button form="settings-form">Close</md-text-button>
     </div>
+  </md-dialog>
+
+  <!-- Card Style Customizer Dialog -->
+  <md-dialog id="card-style-dialog">
+    <div slot="headline">Customize Card Appearance</div>
+    <div slot="content" id="card-style-customizer-container"></div>
+    <!-- Actions will be in the customizer component -->
   </md-dialog>
 
   <script type="module" src="/src/main.ts"></script>
