@@ -1,9 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Unnamed Card Game</title>
+  <link href="https://cdn.jsdelivr.net/npm/beercss@3.7.0/dist/cdn/beer.min.css" rel="stylesheet">
+  <script type="module" src="https://cdn.jsdelivr.net/npm/beercss@3.7.0/dist/cdn/beer.min.js"></script>
+  <script type="module"
+    src="https://cdn.jsdelivr.net/npm/material-dynamic-colors@1.1.2/dist/cdn/material-dynamic-colors.min.js"></script>
   <style>
     :root {
       --md-sys-color-primary: #6750A4;
@@ -131,7 +136,8 @@
       color: #666;
     }
 
-    md-filled-button, md-outlined-button {
+    md-filled-button,
+    md-outlined-button {
       margin: 4px;
     }
 
@@ -450,7 +456,7 @@
     }
 
     /* Theme-specific card styles */
-    
+
     /* Classic Theme (default) */
     .theme-classic .playing-card {
       background: white;
@@ -496,6 +502,7 @@
     }
   </style>
 </head>
+
 <body>
   <div class="container">
     <header>
@@ -553,4 +560,5 @@
 
   <script type="module" src="/src/main.ts"></script>
 </body>
+
 </html>

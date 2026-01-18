@@ -22,6 +22,8 @@
     "vite": "^7.2.4"
   },
   "dependencies": {
-    "@material/web": "^2.4.1"
+    "@material/web": "^2.4.1",
+    "beercss": "^3.13.3",
+    "material-dynamic-colors": "^1.1.2"
   }
 }
