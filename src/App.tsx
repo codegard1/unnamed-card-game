@@ -196,8 +196,8 @@ const App: React.FC = () => {
                       minHeight: 50,
                     }}
                   >
-                    {player.getHand().map((card, idx) => (
-                      <CardComponent key={`${player.id}-${idx}-${updateKey}`} card={card} showBack={false} />
+                    {player.getHand().map((card) => (
+                      <CardComponent key={`${card.suit}-${card.rank}-${updateKey}`} card={card} showBack={false} />
                     ))}
                   </Box>
                 </Paper>

@@ -31,7 +31,7 @@ export const CardStyleCustomizer: React.FC<CardStyleCustomizerProps> = ({
   onSave,
   onCancel,
 }) => {
-  const [currentStyle, setCurrentStyle] = useState<CardStyleConfig>(
+  const [currentStyle, setCurrentStyle] = useState<CardStyleConfig>(() =>
     initialStyle ? structuredClone(initialStyle) : structuredClone(DEFAULT_CARD_STYLE)
   );
 
@@ -41,10 +41,17 @@ export const CardStyleCustomizer: React.FC<CardStyleCustomizerProps> = ({
     }
   }, [initialStyle]);
 
-  const ensureGradientExists = () => {
-    if (!currentStyle.back.gradient) {
-      currentStyle.back.gradient = { type: 'linear', colors: ['', '', ''] };
+  const ensureGradientExists = (style: CardStyleConfig): CardStyleConfig => {
+    if (!style.back.gradient) {
+      return {
+        ...style,
+        back: {
+          ...style.back,
+          gradient: { type: 'linear', colors: ['', '', ''] },
+        },
+      };
     }
+    return style;
   };
 
   const updateStyle = (updates: Partial<CardStyleConfig>) => {
@@ -81,30 +88,32 @@ export const CardStyleCustomizer: React.FC<CardStyleCustomizerProps> = ({
   };
 
   const handleGradientTypeChange = (event: SelectChangeEvent) => {
-    ensureGradientExists();
-    setCurrentStyle(prev => ({
-      ...prev,
-      back: {
-        ...prev.back,
-        gradient: {
-          ...prev.back.gradient!,
-          type: event.target.value as 'linear' | 'radial',
+    setCurrentStyle(prev => {
+      const updated = ensureGradientExists(prev);
+      return {
+        ...updated,
+        back: {
+          ...updated.back,
+          gradient: {
+            ...updated.back.gradient!,
+            type: event.target.value as 'linear' | 'radial',
+          },
         },
-      },
-    }));
+      };
+    });
   };
 
   const handleGradientColorChange = (index: number, color: string) => {
-    ensureGradientExists();
     setCurrentStyle(prev => {
-      const newColors = [...(prev.back.gradient?.colors || ['', '', ''])];
+      const updated = ensureGradientExists(prev);
+      const newColors = [...(updated.back.gradient?.colors || ['', '', ''])];
       newColors[index] = color;
       return {
-        ...prev,
+        ...updated,
         back: {
-          ...prev.back,
+          ...updated.back,
           gradient: {
-            ...prev.back.gradient!,
+            ...updated.back.gradient!,
             colors: newColors,
           },
         },
@@ -113,17 +122,19 @@ export const CardStyleCustomizer: React.FC<CardStyleCustomizerProps> = ({
   };
 
   const handleGradientAngleChange = (angle: number) => {
-    ensureGradientExists();
-    setCurrentStyle(prev => ({
-      ...prev,
-      back: {
-        ...prev.back,
-        gradient: {
-          ...prev.back.gradient!,
-          angle,
+    setCurrentStyle(prev => {
+      const updated = ensureGradientExists(prev);
+      return {
+        ...updated,
+        back: {
+          ...updated.back,
+          gradient: {
+            ...updated.back.gradient!,
+            angle,
+          },
         },
-      },
-    }));
+      };
+    });
   };
 
   const handleImageFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -487,11 +498,12 @@ export const CardStyleCustomizer: React.FC<CardStyleCustomizerProps> = ({
                     <Typography variant="caption" sx={{ color: '#666', mb: 1, display: 'block' }}>
                       Or upload a file:
                     </Typography>
-                    <input
+                    <Box
+                      component="input"
                       type="file"
                       accept="image/*"
                       onChange={handleImageFileUpload}
-                      style={{ width: '100%' }}
+                      sx={{ width: '100%' }}
                     />
                   </Box>
                 </>
