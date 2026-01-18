@@ -1,13 +1,14 @@
 # 🃏 Unnamed Card Game
 
-A TypeScript web application for card games, built with Google's Material Design 3 (Material Web Components). This extensible framework provides a complete card game infrastructure with visual components, customizable styling, and an abstract game system.
+A TypeScript web application for card games, built with React 18 and Material-UI (MUI). This extensible framework provides a complete card game infrastructure with visual components, customizable styling, and an abstract game system.
 
 ## Features
 
 - **TypeScript**: Fully typed codebase for better maintainability and developer experience
-- **Material Design 3**: Modern UI using Google's latest Material Web Components
+- **React 18**: Modern UI using React functional components with hooks
+- **Material-UI (MUI)**: Material Design 3 inspired UI with comprehensive component library
 - **Card Game Framework**: Extensible base classes for building various card games
-- **Visual Card Components**: Rendering system for displaying playing cards with customizable styles
+- **Visual Card Components**: React components for displaying playing cards with customizable styles
 - **Advanced Card Customization**: Comprehensive style editor for card appearance, symbols, backgrounds, and themes
 - **Settings Management**: Persistent user preferences with theme and style options
 - **Modern Build Tools**: Vite for fast development and optimized production builds
@@ -61,16 +62,18 @@ npm run preview
 │   │   ├── Game.ts         # Abstract base game class
 │   │   ├── CardStyles.ts   # Card style configuration and presets
 │   │   └── index.ts        # Exports for game module
-│   ├── components/         # Visual components
-│   │   ├── CardComponent.ts       # Card rendering component
-│   │   ├── CardStyleCustomizer.ts # Style customization UI
+│   ├── components/         # React components
+│   │   ├── CardComponent.tsx       # Card rendering component
+│   │   ├── CardStyleCustomizer.tsx # Style customization UI
 │   │   └── index.ts        # Exports for components module
 │   ├── settings/           # Settings and persistence
 │   │   ├── SettingsManager.ts # User settings manager
 │   │   └── index.ts        # Exports for settings module
-│   └── main.ts             # Main application entry point
+│   ├── App.tsx             # Main React application component
+│   ├── main.tsx            # React application entry point
+│   └── theme.ts            # MUI theme configuration
 ├── index.html              # HTML entry point
-├── vite.config.ts          # Vite configuration
+├── vite.config.ts          # Vite configuration with React plugin
 ├── tsconfig.json           # TypeScript configuration
 └── package.json            # Project dependencies and scripts
 ```
@@ -137,52 +140,83 @@ class MyCardGame extends Game {
 }
 ```
 
-## Visual Components
+## React Components
 
 ### CardComponent
-Visual representation of a playing card with support for front and back faces.
+React functional component for displaying a playing card with flip functionality.
 
-```typescript
+```tsx
 import { CardComponent } from './components';
 import { Card, Suit, Rank } from './game';
 
 const card = new Card(Suit.HEARTS, Rank.ACE);
-const cardComponent = new CardComponent(card);
-document.body.appendChild(cardComponent.getElement());
 
-// Flip the card
-cardComponent.flip();
+// In your React component
+<CardComponent card={card} showBack={false} />
 ```
 
 **Features:**
 - Front face displays suit symbols, rank, and values
 - Back face shows customizable patterns
-- Smooth flip animation
+- Interactive flip on click using React state
 - Responsive to card style configuration
 - Applies CSS custom properties for theming
 
-### CardStyleCustomizer
-Comprehensive UI component for customizing card appearance with live preview.
+**Props:**
+- `card: Card` - The card data to display
+- `showBack?: boolean` - Whether to show the back of the card initially (default: false)
 
-```typescript
+### CardStyleCustomizer
+Comprehensive React component for customizing card appearance with live preview.
+
+```tsx
 import { CardStyleCustomizer } from './components';
 
-const customizer = new CardStyleCustomizer();
+// In your React component
+<CardStyleCustomizer
+  initialStyle={currentStyle}
+  onSave={(style) => handleSave(style)}
+  onCancel={() => handleCancel()}
+/>
+```
 
-// Set up callbacks
-customizer.onSave((style) => {
-  console.log('Saved style:', style);
-});
-
-customizer.onCancel(() => {
-  console.log('Canceled');
-});
-
-// Add to DOM
-document.body.appendChild(customizer.getElement());
-cust...   
-- **Interactive Controls**: Material Design 3 form elements
+**Features:**
+- **Live Preview**: Real-time card preview (front and back) that updates as you customize
+- **Preset Styles**: Quick access to Classic, Casino, Modern, and Minimal presets
+- **Front Face Customization**: Background color, border color/width/radius
+- **Symbol Styles**: Individual colors for hearts, diamonds, clubs, spades, and size adjustment
+- **Back Face Customization**: 
+  - Solid colors
+  - Linear/radial gradients with angle control
+  - Custom images via URL or file upload
+- **MUI Form Components**: TextField, Select, Button for a consistent modern UI
 - **Callback System**: Integration with application settings
+
+**Props:**
+- `initialStyle?: CardStyleConfig` - Initial card style configuration
+- `onSave: (style: CardStyleConfig) => void` - Callback when user saves changes
+- `onCancel: () => void` - Callback when user cancels
+
+### App Component
+Main application component that manages game state and UI.
+
+```tsx
+import App from './App';
+
+// The App component handles:
+// - Game instance and state management
+// - Settings dialog with theme selection
+// - Card style customizer dialog
+// - Player information and card displays
+// - Integration with SettingsManager
+```
+
+**Features:**
+- React hooks for state management (`useState`, `useEffect`)
+- MUI Dialogs for settings and customizer
+- Responsive layout with MUI Container and Box
+- Theme provider for consistent styling
+- Persistent settings via SettingsManager
 
 ## Card Styles System
 
@@ -232,7 +266,7 @@ const customStyle: CardStyleConfig = {
 
 **Available Presets:**
 - **Classic**: Traditional red and black with gradient back
-- **Elegant**: Rich crimson tones with luxurious gold accents
+- **Casino**: Rich crimson tones with luxurious gold accents
 - **Modern**: Contemporary purple gradient with bold styling
 - **Minimal**: Clean, monochromatic design with subtle borders
 
@@ -252,7 +286,7 @@ const currentStyle = settings.getCardStyle();
 settings.setCardStyle(customStyle);
 
 // Use preset
-settings.setCardStylePreset('elegant');
+settings.setCardStylePreset('casino');
 
 // Get/Set theme
 const theme = settings.getTheme();
@@ -310,36 +344,69 @@ class SimpleCardGame extends Game {
 
 ### User Interface
 
-The application provides a complete game interface:
+The application provides a complete game interface built with React and MUI:
 
-- **Game Controls**: Start new game button
+- **Game Controls**: MUI Button for starting new game
 - **Settings Dialog**: 
-  - Theme selection with radio buttons
+  - MUI Dialog with theme selection
+  - Clickable theme options with visual feedback
   - Card style customization button
-- **Card Style Customizer Dialog**: Full-featured style editor
+- **Card Style Customizer Dialog**: 
+  - Full-screen MUI Dialog for style editing
+  - MUI TextField, Select, Button components
+  - Live preview with front and back cards
 - **Game Area**: 
-  - Game status display
-  - Player information with card hands
-  - Visual card components for each card
-- **Material Design Components**: Modern, accessible UI elements
+  - MUI Paper component for card display
+  - Player information cards with MUI Typography
+  - Visual React card components for each card
+- **Responsive Layout**: MUI Container and Box for flexible layouts
+- **Material Design**: Consistent, accessible UI following Material Design 3 principles
 
 ## Technology Stack
 
 - **TypeScript 5.9+**: Type-safe JavaScript with modern features
-- **Vite 7.x**: Next-generation frontend tooling with hot module replacement
-- **Material Web Components 2.x**: Google's Material Design 3 implementation
+- **React 18**: Modern UI library with hooks and functional components
+- **Vite 7.x**: Next-generation frontend tooling with hot module replacement and React Fast Refresh
+- **Material-UI (MUI) 5.x**: React component library implementing Material Design 3
+- **Emotion**: CSS-in-JS library used by MUI for styling
 - **ES2020**: Modern JavaScript features including optional chaining and nullish coalescing
 - **CSS Custom Properties**: Dynamic theming and styling
 - **LocalStorage API**: Persistent user preferences
 
 ## Architecture Highlights
 
-- **Separation of Concerns**: Game logic, visual components, and settings are cleanly separated
+- **Separation of Concerns**: Game logic, React components, and settings are cleanly separated
 - **Type Safety**: Comprehensive TypeScript interfaces and types throughout
 - **Extensibility**: Abstract base classes allow easy implementation of new games
+- **Component-Based**: React functional components with hooks for state management
 - **Customization**: Complete visual customization through the CardStyleCustomizer
-- **Persistence**: User preferences survive page reloads
-- **Modern Web Standards**: Uses web components and ES modules
+- **Persistence**: User preferences survive page reloads via SettingsManager
+- **Modern React**: Uses React 18 features, functional components, and hooks (no class components)
+- **Material Design 3**: Consistent, accessible UI following Google's latest design system
+- **Immutable State**: React best practices with immutable state updates
+
+## Migration from Material Web Components
+
+This project was recently migrated from Material Web Components to React + MUI:
+
+**Benefits:**
+- Better React integration with purpose-built components
+- More comprehensive component library
+- Better TypeScript support
+- Active maintenance and community support
+- Easier customization and theming
+
+**What Changed:**
+- UI framework: Material Web Components → React + Material-UI
+- Component architecture: Class-based → Functional components with hooks
+- State management: Direct DOM manipulation → React state
+- Build: Added @vitejs/plugin-react
+
+**What Stayed the Same:**
+- Game logic (Card, Deck, Player, Game classes)
+- Settings management (SettingsManager)
+- Card style configuration system
+- All features and functionality
 
 ## License
 
