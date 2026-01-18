@@ -21,11 +21,18 @@ import { SettingsManager, CARD_THEMES, CardTheme } from './settings';
 import type { CardStyleConfig } from './game/CardStyles';
 
 /**
- * Example implementation of a simple card game
+ * SimpleCardGame - Example implementation of a simple card game
+ * 
+ * This class extends the base Game class to provide a simple card drawing game
+ * where players draw cards until someone has 10 cards or the deck is empty.
+ * The winner is the player with the most cards.
  */
 class SimpleCardGame extends Game {
+  /**
+   * Deals initial cards to all players at the start of the game
+   * Each player receives 5 cards from the deck
+   */
   protected dealInitialCards(): void {
-    // Deal 5 cards to each player
     for (let i = 0; i < 5; i++) {
       this.players.forEach(player => {
         const card = this.deck.draw();
@@ -36,57 +43,96 @@ class SimpleCardGame extends Game {
     }
   }
 
+  /**
+   * Executes a single turn for a player
+   * @param player - The player taking their turn
+   */
   playTurn(player: Player): void {
-    // Simple turn logic: draw a card
     const card = this.deck.draw();
     if (card) {
       player.addCard(card);
     }
   }
 
+  /**
+   * Checks if the game has ended
+   * @returns true if the deck is empty or any player has 10 or more cards
+   */
   isGameOver(): boolean {
-    // Game is over when deck is empty or any player has 10 cards
     return this.deck.size === 0 || this.players.some(p => p.handSize >= 10);
   }
 
+  /**
+   * Determines the winner(s) of the game
+   * @returns The player with the most cards, an array of players if tied, or null if game isn't over
+   */
   getWinner(): Player | Player[] | null {
     if (!this.isGameOver()) {
       return null;
     }
-    // Winner is the player with the most cards
     const maxCards = Math.max(...this.players.map(p => p.handSize));
     const winners = this.players.filter(p => p.handSize === maxCards);
     return winners.length === 1 ? winners[0] : winners;
   }
 }
 
+/**
+ * App - Main application component for the card game
+ * 
+ * This is the root React component that manages the entire application state and UI.
+ * It handles:
+ * - Game state and lifecycle (starting games, tracking players, updating UI)
+ * - Settings dialog for theme selection
+ * - Card style customizer dialog for appearance customization
+ * - Integration with SettingsManager for persistent user preferences
+ * 
+ * @component
+ */
 const App: React.FC = () => {
+  // Game instance - initialized once with two players
   const [game] = useState(() => new SimpleCardGame(['Player 1', 'Player 2']));
+  
+  // Game state
   const [gameActive, setGameActive] = useState(false);
   const [gameStatus, setGameStatus] = useState('Click "Start New Game" to begin');
   const [players, setPlayers] = useState<Player[]>([]);
   const [deckSize, setDeckSize] = useState(52);
+  
+  // Dialog visibility state
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [customizerOpen, setCustomizerOpen] = useState(false);
+  
+  // Settings state
   const [selectedTheme, setSelectedTheme] = useState<CardTheme>(CardTheme.CLASSIC);
   const [currentCardStyle, setCurrentCardStyle] = useState<CardStyleConfig | null>(null);
+  
+  // Force re-render key for card components when styles change
   const [updateKey, setUpdateKey] = useState(0);
 
   const settings = SettingsManager.getInstance();
 
+  /**
+   * Initialize settings from localStorage on component mount
+   */
   useEffect(() => {
-    // Initialize settings
     settings.initialize();
     setSelectedTheme(settings.getTheme());
     setCurrentCardStyle(settings.getCardStyle());
   }, []);
 
+  /**
+   * Starts a new game and updates the UI
+   */
   const handleStartGame = () => {
     game.start();
     setGameActive(true);
     updateGameUI();
   };
 
+  /**
+   * Updates the game UI state based on current game status
+   * Checks for game over conditions and displays winner information
+   */
   const updateGameUI = () => {
     if (game.isActive()) {
       setGameStatus('Game in progress...');
@@ -107,19 +153,30 @@ const App: React.FC = () => {
     }
   };
 
+  /**
+   * Handles theme selection from the settings dialog
+   * @param themeName - The selected card theme (Classic, Modern, or Minimal)
+   */
   const handleThemeSelect = (themeName: CardTheme) => {
     setSelectedTheme(themeName);
     settings.setTheme(themeName);
   };
 
+  /**
+   * Saves the customized card style and closes the customizer dialog
+   * @param style - The card style configuration to save
+   */
   const handleSaveCardStyle = (style: CardStyleConfig) => {
     settings.setCardStyle(style);
     setCurrentCardStyle(style);
     setCustomizerOpen(false);
-    // Force re-render of cards
+    // Increment updateKey to force re-render of all card components with new styles
     setUpdateKey(prev => prev + 1);
   };
 
+  /**
+   * Opens the card style customizer dialog with current settings
+   */
   const handleOpenCustomizer = () => {
     setCurrentCardStyle(settings.getCardStyle());
     setCustomizerOpen(true);
