@@ -94,20 +94,29 @@ const App: React.FC = () => {
 
   /**
    * Handles theme selection from the settings dialog
-   * @param themeName - The selected card theme (Classic, Modern, or Minimal)
+   * Applies the theme and its matching card style preset (except for CUSTOM)
+   * @param themeName - The selected card theme (Classic, Modern, Minimal, Casino, or Custom)
    */
   const handleThemeSelect = (themeName: CardTheme) => {
     setSelectedTheme(themeName);
     settings.setTheme(themeName);
+    // Update card style to match the selected theme (setTheme auto-applies preset)
+    setCurrentCardStyle(settings.getCardStyle());
+    // Force re-render of card components with new styles
+    setUpdateKey(prev => prev + 1);
   };
 
   /**
    * Saves the customized card style
+   * Switches to CUSTOM theme to indicate user customization
    * @param style - The card style configuration to save
    */
   const handleSaveCardStyle = (style: CardStyleConfig) => {
     settings.setCardStyle(style);
     setCurrentCardStyle(style);
+    // Switch to CUSTOM theme when user customizes beyond presets
+    setSelectedTheme(CardTheme.CUSTOM);
+    settings.setTheme(CardTheme.CUSTOM);
     // Increment updateKey to force re-render of all card components with new styles
     setUpdateKey(prev => prev + 1);
   };

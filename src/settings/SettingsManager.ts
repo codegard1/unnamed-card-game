@@ -62,12 +62,25 @@ export class SettingsManager {
   }
 
   /**
-   * Sets the card theme
+   * Sets the card theme and applies matching card style preset
+   * For CUSTOM theme, no preset is applied (user has customized styles)
    */
   setTheme(theme: CardTheme): void {
     this.currentTheme = theme;
+    
+    // Auto-apply matching card style preset for predefined themes
+    // CUSTOM theme preserves user's customized card style
+    if (theme !== CardTheme.CUSTOM) {
+      const presetName = theme.toLowerCase();
+      const preset = CARD_STYLE_PRESETS[presetName];
+      if (preset) {
+        this.currentCardStyle = preset;
+      }
+    }
+    
     this.saveSettings();
     this.applyTheme();
+    this.applyCardStyle();
   }
 
   /**
