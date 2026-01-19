@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { CardStyleConfig, CardTheme } from './cardStyles';
-import { CardComponent, SettingsDialog } from './components';
+import { CardComponent, SettingsDialog, TurnOptionsComponent } from './components';
 import { Player, SimpleCardGame } from './game';
 import { SettingsManager, } from './settings';
 import { theme } from './theme';
@@ -109,6 +109,15 @@ const App: React.FC = () => {
   };
 
   /**
+   * Handles turn option selection
+   * @param option - The selected turn option
+   */
+  const handleTurnOptionSelect = (option: any) => {
+    console.log(`Option selected: ${option.displayName}`);
+    // TODO: Implement game logic for the selected option
+  };
+
+  /**
    * Saves the customized card style
    * Switches to CUSTOM theme to indicate user customization
    * @param style - The card style configuration to save
@@ -200,6 +209,13 @@ const App: React.FC = () => {
                       <CardComponent key={`${card.suit}-${card.rank}-${updateKey}`} card={card} showBack={false} />
                     ))}
                   </Box>
+                  {player.id === game.getCurrentPlayer().id && (
+                    <TurnOptionsComponent
+                      game={game}
+                      player={player}
+                      onOptionSelect={handleTurnOptionSelect}
+                    />
+                  )}
                 </Paper>
               ))}
               <Typography variant="body1" sx={{ mt: 2 }}>
