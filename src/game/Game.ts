@@ -1,6 +1,7 @@
 import { Deck } from './Deck';
 import { Player } from './Player';
 import { Card } from './Card';
+import { ITurnOption } from './TurnOptions';
 
 /**
  * Base class for card games
@@ -62,6 +63,11 @@ export abstract class Game {
   abstract getWinner(): Player | Player[] | null;
 
   /**
+   * Determine what options to give the player on their turn. Override in subclasses.
+   */
+  abstract getTurnOptions(player: Player): ITurnOption[];
+
+  /**
    * Returns the current player
    */
   getCurrentPlayer(): Player {
@@ -102,4 +108,5 @@ export abstract class Game {
   endGame(): void {
     this.isGameActive = false;
   }
+
 }

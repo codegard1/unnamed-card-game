@@ -1,4 +1,4 @@
-import { Game, Player } from '.';
+import { Game, ITurnOption, Player, TurnOptions } from '.';
 
 /**
  * SimpleCardGame - Example implementation of a simple card game
@@ -53,5 +53,13 @@ export class SimpleCardGame extends Game {
     const maxCards = Math.max(...this.players.map(p => p.handSize));
     const winners = this.players.filter(p => p.handSize === maxCards);
     return winners.length === 1 ? winners[0] : winners;
+  }
+
+  getTurnOptions(player: Player): ITurnOption[] {
+    return [
+      { key: TurnOptions.DRAW_CARD, displayName: "Draw card", disabled: false },
+      { key: TurnOptions.PASS, displayName: "Pass", disabled: false },
+      { key: TurnOptions.BET, displayName: "Bet", disabled: true },
+    ];
   }
 }
