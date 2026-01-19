@@ -11,6 +11,7 @@ A TypeScript web application for card games, built with React 18 and Material-UI
 - **Visual Card Components**: React components for displaying playing cards with customizable styles
 - **Advanced Card Customization**: Comprehensive style editor for card appearance, symbols, backgrounds, and themes
 - **Settings Management**: Persistent user preferences with theme and style options
+- **Event Logging**: Automatic logging of custom events (theme changes, style changes) for debugging and analytics
 - **Modern Build Tools**: Vite for fast development and optimized production builds
 
 ## Getting Started
@@ -69,6 +70,10 @@ npm run preview
 │   ├── settings/           # Settings and persistence
 │   │   ├── SettingsManager.ts # User settings manager
 │   │   └── index.ts        # Exports for settings module
+│   ├── tools/              # Utility functions and helpers
+│   │   ├── EventLogger.ts  # Event logging system
+│   │   ├── getSuitSymbol.ts # Suit symbol utilities
+│   │   └── index.ts        # Exports for tools module
 │   ├── App.tsx             # Main React application component
 │   ├── main.tsx            # React application entry point
 │   └── theme.ts            # MUI theme configuration
@@ -299,6 +304,58 @@ settings.setTheme(CardTheme.MODERN);
 - Theme management (Classic, Modern, Minimal)
 - Card style configuration management
 - Singleton pattern for global access
+
+## Event Logging
+
+### EventLogger
+Singleton class for logging all custom events dispatched by the application, including theme changes and card style changes.
+
+```typescript
+import { EventLogger } from './tools';
+
+const logger = EventLogger.getInstance();
+
+// Get all logged events
+const allEvents = logger.getEvents();
+
+// Get events of a specific type
+const themeEvents = logger.getEventsByType('themechange');
+const styleEvents = logger.getEventsByType('cardstylechange');
+
+// Get recent events
+const recentEvents = logger.getRecentEvents(10);
+
+// Get events within a date range
+const startDate = new Date('2024-01-01');
+const endDate = new Date('2024-12-31');
+const eventsInRange = logger.getEventsByDateRange(startDate, endDate);
+
+// Get event count by type
+const counts = logger.getEventCountByType();
+console.log(counts); // { themechange: 5, cardstylechange: 3 }
+
+// Clear all logs
+logger.clearLogs();
+```
+
+**Features:**
+- Automatic event capture for custom events
+- Singleton pattern for global access
+- Filter events by type or date range
+- Retrieve recent events
+- Get event statistics
+- Console logging in development mode
+- Maximum log size management (default: 1000 events)
+
+**Logged Events:**
+- `themechange`: Dispatched when the card theme is changed
+- `cardstylechange`: Dispatched when card styles are applied
+
+Each logged event includes:
+- Unique ID
+- Timestamp
+- Event type
+- Event details (payload)
 
 ## Gameplay Elements
 
