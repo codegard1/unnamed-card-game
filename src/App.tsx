@@ -4,19 +4,14 @@ import {
   Button,
   Container,
   CssBaseline,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
   IconButton,
   Paper,
   ThemeProvider,
-  Typography,
+  Typography
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-// import { CardTheme } from './cardStyles';
-import { CARD_THEMES, CardStyleConfig, CardTheme } from './cardStyles';
-import { CardComponent, CardStyleCustomizer } from './components';
+import { CardStyleConfig, CardTheme } from './cardStyles';
+import { CardComponent, SettingsDialog } from './components';
 import { Player, SimpleCardGame } from './game';
 import { SettingsManager, } from './settings';
 import { theme } from './theme';
@@ -45,10 +40,9 @@ const App: React.FC = () => {
 
   // Dialog visibility state
   const [settingsOpen, setSettingsOpen] = useState(false);
-  const [customizerOpen, setCustomizerOpen] = useState(false);
 
   // Settings state
-  const [selectedTheme, setSelectedTheme] = useState<String>(CardTheme.CLASSIC);
+  const [selectedTheme, setSelectedTheme] = useState<CardTheme>(CardTheme.CLASSIC);
   const [currentCardStyle, setCurrentCardStyle] = useState<CardStyleConfig | null>(null);
 
   // Force re-render key for card components when styles change
@@ -108,23 +102,14 @@ const App: React.FC = () => {
   };
 
   /**
-   * Saves the customized card style and closes the customizer dialog
+   * Saves the customized card style
    * @param style - The card style configuration to save
    */
   const handleSaveCardStyle = (style: CardStyleConfig) => {
     settings.setCardStyle(style);
     setCurrentCardStyle(style);
-    setCustomizerOpen(false);
     // Increment updateKey to force re-render of all card components with new styles
     setUpdateKey(prev => prev + 1);
-  };
-
-  /**
-   * Opens the card style customizer dialog with current settings
-   */
-  const handleOpenCustomizer = () => {
-    setCurrentCardStyle(settings.getCardStyle());
-    setCustomizerOpen(true);
   };
 
   return (
@@ -212,85 +197,14 @@ const App: React.FC = () => {
         </Paper>
 
         {/* Settings Dialog */}
-        <Dialog open={settingsOpen} onClose={() => setSettingsOpen(false)} maxWidth="sm" fullWidth>
-          <DialogTitle>Settings</DialogTitle>
-          <DialogContent>
-            <Box sx={{ py: 1 }}>
-              <Typography variant="h3" sx={{ mb: 1.5, color: 'primary.main', fontSize: '1.1rem' }}>
-                Card Theme
-              </Typography>
-              <Box>
-                {CARD_THEMES.map(themeConfig => (
-                  <Box
-                    key={themeConfig.name}
-                    onClick={() => handleThemeSelect(themeConfig.name)}
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      p: 1.5,
-                      mb: 1,
-                      borderRadius: 1,
-                      cursor: 'pointer',
-                      border: '2px solid',
-                      borderColor: selectedTheme === themeConfig.name ? 'primary.main' : 'transparent',
-                      bgcolor: selectedTheme === themeConfig.name ? 'rgba(103, 80, 164, 0.08)' : 'transparent',
-                      transition: 'all 0.2s',
-                      '&:hover': {
-                        bgcolor: '#f5f5f5',
-                      },
-                    }}
-                  >
-                    <Box sx={{ flex: 1 }}>
-                      <Typography variant="body1" sx={{ fontWeight: 500, mb: 0.5 }}>
-                        {themeConfig.displayName}
-                      </Typography>
-                      <Typography variant="body2" sx={{ fontSize: '0.875rem', color: '#666' }}>
-                        {themeConfig.description}
-                      </Typography>
-                    </Box>
-                  </Box>
-                ))}
-              </Box>
-
-              <Box sx={{ mt: 3 }}>
-                <Typography variant="h3" sx={{ mb: 1.5, color: 'primary.main', fontSize: '1.1rem' }}>
-                  Card Styles
-                </Typography>
-                <Button variant="contained" onClick={handleOpenCustomizer}>
-                  Customize Card Appearance
-                </Button>
-              </Box>
-            </Box>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => setSettingsOpen(false)}>Close</Button>
-          </DialogActions>
-        </Dialog>
-
-        {/* Card Style Customizer Dialog */}
-        <Dialog
-          open={customizerOpen}
-          onClose={() => setCustomizerOpen(false)}
-          maxWidth="lg"
-          fullWidth
-          PaperProps={{
-            sx: {
-              maxHeight: '90vh',
-              minWidth: { xs: 'auto', md: '800px' },
-            },
-          }}
-        >
-          <DialogTitle>Customize Card Appearance</DialogTitle>
-          <DialogContent>
-            {currentCardStyle && (
-              <CardStyleCustomizer
-                initialStyle={currentCardStyle}
-                onSave={handleSaveCardStyle}
-                onCancel={() => setCustomizerOpen(false)}
-              />
-            )}
-          </DialogContent>
-        </Dialog>
+        <SettingsDialog
+          open={settingsOpen}
+          onClose={() => setSettingsOpen(false)}
+          selectedTheme={selectedTheme}
+          onThemeSelect={handleThemeSelect}
+          currentCardStyle={currentCardStyle}
+          onSaveCardStyle={handleSaveCardStyle}
+        />
       </Container>
     </ThemeProvider>
   );

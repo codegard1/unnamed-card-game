@@ -4,5 +4,7 @@
 export enum CardTheme {
   CLASSIC = 'classic',
   MODERN = 'modern',
-  MINIMAL = 'minimal'
+  MINIMAL = 'minimal',
+  CASINO = 'casino',
+  CUSTOM = 'custom'
 }

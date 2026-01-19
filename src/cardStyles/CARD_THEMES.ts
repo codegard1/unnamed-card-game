@@ -19,4 +19,9 @@ export const CARD_THEMES: ThemeConfig[] = [
     displayName: 'Minimal',
     description: 'Clean and simple design',
   },
+  {
+    name: CardTheme.CASINO,
+    displayName: 'Casino',
+    description: 'Dazzling and spectacular',
+  },
 ];
