@@ -11,6 +11,7 @@ import {
   Typography,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
+import { Rank, Suit } from '../game';
 import { BackgroundType, CARD_STYLE_PRESETS, CardStyleConfig, DEFAULT_CARD_STYLE } from '../cardStyles';
 
 /**
@@ -45,6 +46,10 @@ export const CardStyleCustomizer: React.FC<CardStyleCustomizerProps> = ({
   const [currentStyle, setCurrentStyle] = useState<CardStyleConfig>(() =>
     initialStyle ? structuredClone(initialStyle) : structuredClone(DEFAULT_CARD_STYLE)
   );
+
+  // Preview card suit and rank for the front card display
+  const [previewRank, setPreviewRank] = useState<Rank>(Rank.ACE);
+  const [previewSuit, setPreviewSuit] = useState<Suit>(Suit.HEARTS);
 
   // Update current style when initialStyle prop changes
   useEffect(() => {
@@ -218,6 +223,31 @@ export const CardStyleCustomizer: React.FC<CardStyleCustomizerProps> = ({
   };
 
   /**
+   * Generates a random card rank and suit for the preview card
+   * Used when clicking the front card preview to change its appearance
+   */
+  const randomizePreviewCard = () => {
+    const ranks = Object.values(Rank);
+    const suits = Object.values(Suit);
+    setPreviewRank(ranks[Math.floor(Math.random() * ranks.length)]);
+    setPreviewSuit(suits[Math.floor(Math.random() * suits.length)]);
+  };
+
+  /**
+   * Gets the Unicode suit symbol for the current preview suit
+   * @returns The suit symbol character (♥, ♦, ♣, or ♠)
+   */
+  const getPreviewSuitSymbol = (): string => {
+    const suitSymbols: Record<Suit, string> = {
+      [Suit.HEARTS]: '♥',
+      [Suit.DIAMONDS]: '♦',
+      [Suit.CLUBS]: '♣',
+      [Suit.SPADES]: '♠',
+    };
+    return suitSymbols[previewSuit];
+  };
+
+  /**
    * Generates CSS styles for the card preview based on current configuration
    * For back: generates background (solid/gradient/image) and border styles
    * For front: generates background, border, and CSS custom properties for symbol colors and font sizes
@@ -322,6 +352,7 @@ export const CardStyleCustomizer: React.FC<CardStyleCustomizerProps> = ({
                   Front
                 </Typography>
                 <Box
+                  onClick={randomizePreviewCard}
                   sx={{
                     ...getPreviewCardStyles(false),
                     width: 120,
@@ -331,13 +362,19 @@ export const CardStyleCustomizer: React.FC<CardStyleCustomizerProps> = ({
                     justifyContent: 'space-between',
                     padding: 1,
                     boxShadow: '0 8px 16px rgba(0, 0, 0, 0.3)',
+                    cursor: 'pointer',
+                    transition: 'transform 0.2s, box-shadow 0.2s',
+                    '&:hover': {
+                      transform: 'scale(1.05)',
+                      boxShadow: '0 12px 20px rgba(0, 0, 0, 0.4)',
+                    },
                     '& .card-rank': {
                       fontSize: 'var(--card-corner-font-size)',
-                      color: 'var(--card-heart-color)',
+                      color: `var(--card-${previewSuit === Suit.HEARTS || previewSuit === Suit.DIAMONDS ? 'heart' : 'club'}-color)`,
                     },
                     '& .card-suit': {
                       fontSize: 'var(--card-center-font-size)',
-                      color: 'var(--card-heart-color)',
+                      color: `var(--card-${previewSuit === Suit.HEARTS || previewSuit === Suit.DIAMONDS ? 'heart' : 'club'}-color)`,
                       textAlign: 'center',
                       flex: 1,
                       display: 'flex',
@@ -353,10 +390,13 @@ export const CardStyleCustomizer: React.FC<CardStyleCustomizerProps> = ({
                     },
                   }}
                 >
-                  <div className="card-rank top">A</div>
-                  <div className="card-suit">♥</div>
-                  <div className="card-rank bottom">A</div>
+                  <div className="card-rank top">{previewRank}</div>
+                  <div className="card-suit">{getPreviewSuitSymbol()}</div>
+                  <div className="card-rank bottom">{previewRank}</div>
                 </Box>
+                <Typography variant="caption" sx={{ display: 'block', mt: 1, color: '#666', fontSize: '0.75rem' }}>
+                  Click to randomize
+                </Typography>
               </Box>
               {/* Back card preview - shows gradient or solid background */}
               <Box sx={{ textAlign: 'center' }}>
