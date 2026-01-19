@@ -1,76 +1,9 @@
-/**
- * Card style configuration types and interfaces
- */
-
-/**
- * Background style types for card backs
- */
-export enum BackgroundType {
-  SOLID = 'solid',
-  GRADIENT = 'gradient',
-  IMAGE = 'image',
-}
-
-/**
- * Gradient configuration
- */
-export interface GradientConfig {
-  type: 'linear' | 'radial';
-  angle?: number; // for linear gradients (in degrees)
-  colors: string[]; // array of color stops
-}
-
-/**
- * Card back design configuration
- */
-export interface CardBackStyle {
-  backgroundType: BackgroundType;
-  backgroundColor?: string; // for solid backgrounds
-  gradient?: GradientConfig; // for gradient backgrounds
-  imageUrl?: string; // for image backgrounds
-  borderColor?: string;
-  borderWidth?: number;
-  borderRadius?: number;
-}
-
-/**
- * Symbol style configuration
- */
-export interface SymbolStyle {
-  fontSize: number;
-  fontWeight: string;
-  heartColor: string;
-  diamondColor: string;
-  clubColor: string;
-  spadeColor: string;
-}
-
-/**
- * Card front face configuration
- */
-export interface CardFrontStyle {
-  backgroundColor: string;
-  borderColor: string;
-  borderWidth: number;
-  borderRadius: number;
-  cornerFontSize: number;
-  centerFontSize: number;
-  symbolStyle: SymbolStyle;
-}
-
-/**
- * Complete card style configuration
- */
-export interface CardStyleConfig {
-  name: string;
-  displayName: string;
-  front: CardFrontStyle;
-  back: CardBackStyle;
-}
+import { CardStyleConfig, BackgroundType } from ".";
 
 /**
  * Preset card style configurations
  */
+
 export const CARD_STYLE_PRESETS: Record<string, CardStyleConfig> = {
   classic: {
     name: 'classic',
@@ -193,8 +126,8 @@ export const CARD_STYLE_PRESETS: Record<string, CardStyleConfig> = {
     },
   },
 };
-
 /**
  * Default card style (classic)
  */
+
 export const DEFAULT_CARD_STYLE: CardStyleConfig = CARD_STYLE_PRESETS.classic;

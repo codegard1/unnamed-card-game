@@ -1,20 +1,17 @@
-import React, { useState, useEffect } from 'react';
 import {
   Box,
   Button,
-  TextField,
-  Select,
-  MenuItem,
   FormControl,
   InputLabel,
-  Typography,
+  MenuItem,
   Paper,
+  Select,
   SelectChangeEvent,
+  TextField,
+  Typography,
 } from '@mui/material';
-import type { CardStyleConfig } from '../game/CardStyles';
-import { BackgroundType, CARD_STYLE_PRESETS, DEFAULT_CARD_STYLE } from '../game/CardStyles';
-import { Card, Suit, Rank } from '../game';
-import { CardComponent } from './CardComponent';
+import React, { useEffect, useState } from 'react';
+import { BackgroundType, CARD_STYLE_PRESETS, CardStyleConfig, DEFAULT_CARD_STYLE } from '../cardStyles';
 
 interface CardStyleCustomizerProps {
   initialStyle?: CardStyleConfig;

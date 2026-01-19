@@ -1,24 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import SettingsIcon from '@mui/icons-material/Settings';
 import {
-  ThemeProvider,
-  CssBaseline,
-  Container,
   Box,
-  Typography,
   Button,
+  Container,
+  CssBaseline,
   Dialog,
-  DialogTitle,
-  DialogContent,
   DialogActions,
+  DialogContent,
+  DialogTitle,
   IconButton,
   Paper,
+  ThemeProvider,
+  Typography,
 } from '@mui/material';
-import SettingsIcon from '@mui/icons-material/Settings';
-import { theme } from './theme';
-import { Card, Deck, Player, Game } from './game';
+import React, { useEffect, useState } from 'react';
+import { CARD_THEMES, CardStyleConfig, CardTheme } from './cardStyles';
 import { CardComponent, CardStyleCustomizer } from './components';
-import { SettingsManager, CARD_THEMES, CardTheme } from './settings';
-import type { CardStyleConfig } from './game/CardStyles';
+import { Game, Player } from './game';
+import { SettingsManager, } from './settings';
+import { theme } from './theme';
 
 /**
  * SimpleCardGame - Example implementation of a simple card game
@@ -91,21 +91,21 @@ class SimpleCardGame extends Game {
 const App: React.FC = () => {
   // Game instance - initialized once with two players
   const [game] = useState(() => new SimpleCardGame(['Player 1', 'Player 2']));
-  
+
   // Game state
   const [gameActive, setGameActive] = useState(false);
   const [gameStatus, setGameStatus] = useState('Click "Start New Game" to begin');
   const [players, setPlayers] = useState<Player[]>([]);
   const [deckSize, setDeckSize] = useState(52);
-  
+
   // Dialog visibility state
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [customizerOpen, setCustomizerOpen] = useState(false);
-  
+
   // Settings state
   const [selectedTheme, setSelectedTheme] = useState<CardTheme>(CardTheme.CLASSIC);
   const [currentCardStyle, setCurrentCardStyle] = useState<CardStyleConfig | null>(null);
-  
+
   // Force re-render key for card components when styles change
   const [updateKey, setUpdateKey] = useState(0);
 
