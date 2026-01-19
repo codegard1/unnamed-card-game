@@ -1,5 +1,4 @@
 import { CardTheme, ThemeConfig } from '.';
-
 /**
  * Available card themes
  */

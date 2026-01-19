@@ -14,6 +14,7 @@ import {
   Typography,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
+// import { CardTheme } from './cardStyles';
 import { CARD_THEMES, CardStyleConfig, CardTheme } from './cardStyles';
 import { CardComponent, CardStyleCustomizer } from './components';
 import { Player, SimpleCardGame } from './game';
@@ -47,7 +48,7 @@ const App: React.FC = () => {
   const [customizerOpen, setCustomizerOpen] = useState(false);
 
   // Settings state
-  const [selectedTheme, setSelectedTheme] = useState<CardTheme>(CardTheme.CLASSIC);
+  const [selectedTheme, setSelectedTheme] = useState<String>(CardTheme.CLASSIC);
   const [currentCardStyle, setCurrentCardStyle] = useState<CardStyleConfig | null>(null);
 
   // Force re-render key for card components when styles change
