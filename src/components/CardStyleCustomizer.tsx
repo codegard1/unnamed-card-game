@@ -13,6 +13,7 @@ import {
 import React, { useEffect, useState } from 'react';
 import { Rank, Suit } from '../game';
 import { BackgroundType, CARD_STYLE_PRESETS, CardStyleConfig, DEFAULT_CARD_STYLE } from '../cardStyles';
+import { getSuitSymbol } from '../tools';
 
 /**
  * Props for the CardStyleCustomizer component
@@ -234,20 +235,6 @@ export const CardStyleCustomizer: React.FC<CardStyleCustomizerProps> = ({
   };
 
   /**
-   * Gets the Unicode suit symbol for the current preview suit
-   * @returns The suit symbol character (♥, ♦, ♣, or ♠)
-   */
-  const getPreviewSuitSymbol = (): string => {
-    const suitSymbols: Record<Suit, string> = {
-      [Suit.HEARTS]: '♥',
-      [Suit.DIAMONDS]: '♦',
-      [Suit.CLUBS]: '♣',
-      [Suit.SPADES]: '♠',
-    };
-    return suitSymbols[previewSuit];
-  };
-
-  /**
    * Generates CSS styles for the card preview based on current configuration
    * For back: generates background (solid/gradient/image) and border styles
    * For front: generates background, border, and CSS custom properties for symbol colors and font sizes
@@ -391,7 +378,7 @@ export const CardStyleCustomizer: React.FC<CardStyleCustomizerProps> = ({
                   }}
                 >
                   <div className="card-rank top">{previewRank}</div>
-                  <div className="card-suit">{getPreviewSuitSymbol()}</div>
+                  <div className="card-suit">{getSuitSymbol(previewSuit)}</div>
                   <div className="card-rank bottom">{previewRank}</div>
                 </Box>
                 <Typography variant="caption" sx={{ display: 'block', mt: 1, color: '#666', fontSize: '0.75rem' }}>
