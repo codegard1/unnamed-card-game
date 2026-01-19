@@ -88,7 +88,7 @@ export class EventLogger {
       id: this.generateId(),
       timestamp: new Date(),
       type,
-      detail: detail || null,
+      detail: detail ?? null,
     };
 
     this.events.push(loggedEvent);
@@ -193,8 +193,14 @@ export class EventLogger {
 
   /**
    * Generates a unique ID for a log entry
+   * Uses crypto.randomUUID() when available, falls back to timestamp + random string
    */
   private generateId(): string {
+    // Use crypto.randomUUID() if available (modern browsers and Node.js)
+    if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+      return crypto.randomUUID();
+    }
+    // Fallback for older environments
     return `${Date.now()}-${Math.random().toString(36).slice(2, 11)}`;
   }
 
