@@ -73,6 +73,7 @@ export class SettingsManager {
     if (theme !== CardTheme.CUSTOM) {
       const presetName = theme.toLowerCase();
       const preset = CARD_STYLE_PRESETS[presetName];
+      // Only apply if preset exists (enum values match preset keys)
       if (preset) {
         this.currentCardStyle = preset;
       }
