@@ -5,3 +5,4 @@ export { Player } from './Player';
 export { SimpleCardGame } from './SimpleCardGame';
 export { TurnOptions } from './TurnOptions';
 export type { ITurnOption } from './TurnOptions';
+export type { IGameMetadata } from './GameMetadata';

@@ -1,4 +1,5 @@
 import { Game, ITurnOption, Player, TurnOptions } from '.';
+import { IGameMetadata } from './GameMetadata';
 
 /**
  * SimpleCardGame - Example implementation of a simple card game
@@ -8,6 +9,45 @@ import { Game, ITurnOption, Player, TurnOptions } from '.';
  * The winner is the player with the most cards.
  */
 export class SimpleCardGame extends Game {
+  /**
+   * Game metadata including description, rules, version, creator, and website
+   */
+  protected metadata: IGameMetadata = {
+    description: `
+# Simple Card Game
+
+A basic card drawing game where players compete to collect the most cards.
+Players take turns drawing cards from a shared deck until someone reaches 10 cards or the deck runs out.
+    `.trim(),
+    rules: `
+# Game Rules
+
+## Objective
+Be the player with the most cards when the game ends.
+
+## Setup
+- Each player starts with 5 cards dealt from a standard 52-card deck.
+
+## Gameplay
+- On your turn, you must draw one card from the deck.
+- If the deck runs out of cards, the game ends immediately.
+- Players take turns in order.
+
+## Winning
+- The game ends when any player has 10 or more cards, or when the deck is empty.
+- The player with the most cards wins.
+- If there is a tie, all tied players are declared winners.
+
+## Turn Options
+- **Draw Card**: Draw a card from the deck and add it to your hand (required action).
+- **Pass**: Skip your turn without drawing (available but not recommended).
+- **Bet**: Not yet implemented.
+    `.trim(),
+    version: '1.0.0',
+    creatorName: 'Anonymous',
+    rulesWebsite: 'https://example.com/simple-card-game-rules',
+  };
+
   /**
    * Deals initial cards to all players at the start of the game
    * Each player receives 5 cards from the deck
