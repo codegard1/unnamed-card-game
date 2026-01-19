@@ -24,4 +24,9 @@ export const CARD_THEMES: ThemeConfig[] = [
     displayName: 'Casino',
     description: 'Dazzling and spectacular',
   },
+  {
+    name: CardTheme.CUSTOM,
+    displayName: 'Custom',
+    description: 'Your personalized card style',
+  },
 ];
