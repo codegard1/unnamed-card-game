@@ -210,13 +210,6 @@ const App: React.FC = () => {
           )}
         </Paper>
 
-        {/* Footer */}
-        <Box sx={{ textAlign: 'center', mt: 5, pt: 2.5, borderTop: '1px solid #e0e0e0', color: '#666' }}>
-          <Typography variant="body2">
-            Built with TypeScript, React and Material-UI
-          </Typography>
-        </Box>
-
         {/* Settings Dialog */}
         <Dialog open={settingsOpen} onClose={() => setSettingsOpen(false)} maxWidth="sm" fullWidth>
           <DialogTitle>Settings</DialogTitle>
