@@ -39,7 +39,7 @@ export class EventLogger {
   private static instance: EventLogger;
   private events: LoggedEvent[] = [];
   private maxLogSize = 1000; // Maximum number of events to keep in memory
-  private eventListeners: Map<string, (event: CustomEvent) => void> = new Map();
+  private eventListeners: Map<string, EventListener> = new Map();
 
   private constructor() {
     // Private constructor for singleton pattern
@@ -62,20 +62,20 @@ export class EventLogger {
    */
   private initializeEventListeners(): void {
     // Listen for theme change events
-    const themeChangeListener = (event: Event) => {
+    const themeChangeListener: EventListener = (event: Event) => {
       const customEvent = event as CustomEvent;
       this.logEvent('themechange', customEvent.detail);
     };
     window.addEventListener('themechange', themeChangeListener);
-    this.eventListeners.set('themechange', themeChangeListener as (event: CustomEvent) => void);
+    this.eventListeners.set('themechange', themeChangeListener);
 
     // Listen for card style change events
-    const cardStyleChangeListener = (event: Event) => {
+    const cardStyleChangeListener: EventListener = (event: Event) => {
       const customEvent = event as CustomEvent;
       this.logEvent('cardstylechange', customEvent.detail);
     };
     window.addEventListener('cardstylechange', cardStyleChangeListener);
-    this.eventListeners.set('cardstylechange', cardStyleChangeListener as (event: CustomEvent) => void);
+    this.eventListeners.set('cardstylechange', cardStyleChangeListener);
   }
 
   /**
@@ -167,7 +167,7 @@ export class EventLogger {
   getEventCountByType(): Record<string, number> {
     const counts: Record<string, number> = {};
     this.events.forEach(event => {
-      counts[event.type] = (counts[event.type] || 0) + 1;
+      counts[event.type] = (counts[event.type] ?? 0) + 1;
     });
     return counts;
   }
@@ -210,7 +210,7 @@ export class EventLogger {
    */
   destroy(): void {
     this.eventListeners.forEach((listener, type) => {
-      window.removeEventListener(type, listener as EventListener);
+      window.removeEventListener(type, listener);
     });
     this.eventListeners.clear();
     this.events = [];
