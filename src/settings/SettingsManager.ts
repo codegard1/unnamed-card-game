@@ -91,7 +91,9 @@ export class SettingsManager {
     document.body.classList.remove(
       'theme-classic',
       'theme-modern',
-      'theme-minimal'
+      'theme-minimal',
+      'theme-casino',
+      'theme-custom'
     );
 
     // Add current theme class
