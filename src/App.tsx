@@ -16,6 +16,7 @@ import { CardComponent, SettingsDialog, TurnOptionsComponent, GameInfoDialog, Ga
 import { Player, SimpleCardGame, Game } from './game';
 import { SettingsManager, } from './settings';
 import { theme } from './theme';
+import cardGameIllustration from './assets/Gemini_Generated_Image_gpr8bugpr8bugpr8.png';
 
 /**
  * App - Main application component for the card game
@@ -209,12 +210,15 @@ const App: React.FC = () => {
 
         {/* Game Area */}
         <Paper sx={{ p: 4, mb: 2, borderRadius: 1.5, boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)' }}>
-          <Typography
-            variant="h6"
-            sx={{ fontWeight: 'bold', textAlign: 'center', mb: 2.5, color: 'primary.main', fontSize: '1.3rem' }}
-          >
-            {gameStatus}
-          </Typography>
+
+          {!gameActive && (
+            <Typography
+              variant="h6"
+              sx={{ fontWeight: 'bold', textAlign: 'center', mb: 2.5, color: 'primary.main', fontSize: '1.3rem' }}
+            >
+              <img src={cardGameIllustration} alt={gameStatus} style={{ display: 'block', width: '66%', margin: '0 auto' }} />
+            </Typography>
+          )}
 
           {gameActive && (
             <Box>
