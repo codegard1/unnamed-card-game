@@ -38,30 +38,28 @@ const GameSelector: React.FC<GameSelectorProps> = ({ selectedGame, onGameSelect,
   ];
 
   return (
-    <Paper sx={{ p: 2, borderRadius: 1.5, boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)' }}>
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-        <Typography variant="subtitle1" sx={{ fontWeight: 600, whiteSpace: 'nowrap' }}>
-          Game:
-        </Typography>
-        <FormControl sx={{ minWidth: 200 }} disabled={disabled}>
-          <InputLabel id="game-select-label">Select a Game</InputLabel>
-          <Select
-            labelId="game-select-label"
-            id="game-select"
-            value={selectedGame}
-            label="Select a Game"
-            disabled={disabled}
-            onChange={(e) => onGameSelect(e.target.value as GameType)}
-          >
-            {availableGames.map((game) => (
-              <MenuItem key={game.value} value={game.value}>
-                {game.label}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </Box>
-    </Paper>
+    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+      <Typography variant="subtitle1" sx={{ fontWeight: 600, whiteSpace: 'nowrap' }}>
+        Game:
+      </Typography>
+      <FormControl sx={{ minWidth: 200 }} disabled={disabled}>
+        <InputLabel id="game-select-label">Select a Game</InputLabel>
+        <Select
+          labelId="game-select-label"
+          id="game-select"
+          value={selectedGame}
+          label="Select a Game"
+          disabled={disabled}
+          onChange={(e) => onGameSelect(e.target.value as GameType)}
+        >
+          {availableGames.map((game) => (
+            <MenuItem key={game.value} value={game.value}>
+              {game.label}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+    </Box>
   );
 };
 

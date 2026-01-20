@@ -195,17 +195,17 @@ const App: React.FC = () => {
           </Typography>
         </Box>
 
-        {/* Game Selector */}
-        <Box sx={{ mb: 3 }}>
-          <GameSelector selectedGame={selectedGameType} onGameSelect={handleGameTypeSelect} disabled={gameActive} />
-        </Box>
+        <Paper sx={{ p: 2, borderRadius: 1.5, boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)' }}>
+          {/* Game Selector */}
+          <Box sx={{ mb: 3, flexDirection: 'row', display: 'flex', alignItems: 'center', gap: 2 }}>
+            <GameSelector selectedGame={selectedGameType} onGameSelect={handleGameTypeSelect} disabled={gameActive} />
 
-        {/* Game Controls */}
-        <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center', mb: 3, flexWrap: 'wrap' }}>
-          <Button variant="contained" onClick={handleStartGame}>
-            Start New Game
-          </Button>
-        </Box>
+            {/* Game Controls */}
+            <Button variant="contained" onClick={handleStartGame}>
+              Start New Game
+            </Button>
+          </Box>
+        </Paper>
 
         {/* Game Area */}
         <Paper sx={{ p: 4, mb: 2, borderRadius: 1.5, boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)' }}>
