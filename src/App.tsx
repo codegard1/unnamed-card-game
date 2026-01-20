@@ -1,4 +1,5 @@
 import SettingsIcon from '@mui/icons-material/Settings';
+import InfoIcon from '@mui/icons-material/Info';
 import {
   Box,
   Button,
@@ -11,7 +12,7 @@ import {
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { CardStyleConfig, CardTheme } from './cardStyles';
-import { CardComponent, SettingsDialog, TurnOptionsComponent } from './components';
+import { CardComponent, SettingsDialog, TurnOptionsComponent, GameInfoDialog } from './components';
 import { Player, SimpleCardGame } from './game';
 import { SettingsManager, } from './settings';
 import { theme } from './theme';
@@ -40,6 +41,7 @@ const App: React.FC = () => {
 
   // Dialog visibility state
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [gameInfoOpen, setGameInfoOpen] = useState(false);
 
   // Settings state
   const [selectedTheme, setSelectedTheme] = useState<CardTheme>(CardTheme.CLASSIC);
@@ -140,12 +142,19 @@ const App: React.FC = () => {
       <Container maxWidth="lg" sx={{ py: 3 }}>
         {/* Header */}
         <Box sx={{ position: 'relative', textAlign: 'center', mb: 5 }}>
-          <IconButton
-            sx={{ position: 'absolute', top: 0, right: 0 }}
-            onClick={() => setSettingsOpen(true)}
-          >
-            <SettingsIcon />
-          </IconButton>
+          <Box sx={{ position: 'absolute', top: 0, right: 0, display: 'flex', gap: 1 }}>
+            <IconButton
+              onClick={() => setGameInfoOpen(true)}
+              title="Game Information"
+            >
+              <InfoIcon />
+            </IconButton>
+            <IconButton
+              onClick={() => setSettingsOpen(true)}
+            >
+              <SettingsIcon />
+            </IconButton>
+          </Box>
           <Typography variant="h1" sx={{ color: 'primary.main', mb: 1 }}>
             🃏 Unnamed Card Game
           </Typography>
@@ -233,6 +242,13 @@ const App: React.FC = () => {
           onThemeSelect={handleThemeSelect}
           currentCardStyle={currentCardStyle}
           onSaveCardStyle={handleSaveCardStyle}
+        />
+
+        {/* Game Info Dialog */}
+        <GameInfoDialog
+          open={gameInfoOpen}
+          onClose={() => setGameInfoOpen(false)}
+          game={game}
         />
       </Container>
     </ThemeProvider>
