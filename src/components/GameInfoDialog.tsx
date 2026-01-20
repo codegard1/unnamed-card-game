@@ -11,6 +11,7 @@ import {
   Divider,
 } from '@mui/material';
 import { Game } from '../game';
+import MarkdownRenderer from '../tools/MarkdownRenderer';
 
 interface GameInfoDialogProps {
   open: boolean;
@@ -46,9 +47,7 @@ const GameInfoDialog: React.FC<GameInfoDialogProps> = ({ open, onClose, game }) 
               <Typography variant="h6" sx={{ fontWeight: 600, mb: 1, color: 'primary.main' }}>
                 Description
               </Typography>
-              <Typography variant="body2" sx={{ whiteSpace: 'pre-wrap', color: '#333' }}>
-                {metadata.description}
-              </Typography>
+              <MarkdownRenderer content={metadata.description} />
             </Box>
 
             <Divider />
@@ -58,13 +57,7 @@ const GameInfoDialog: React.FC<GameInfoDialogProps> = ({ open, onClose, game }) 
               <Typography variant="h6" sx={{ fontWeight: 600, mb: 1, color: 'primary.main' }}>
                 Rules
               </Typography>
-              <Typography
-                variant="body2"
-                component="div"
-                sx={{ whiteSpace: 'pre-wrap', color: '#333', fontSize: '0.95rem' }}
-              >
-                {metadata.rules}
-              </Typography>
+              <MarkdownRenderer content={metadata.rules} />
             </Box>
 
             <Divider />
