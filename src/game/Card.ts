@@ -34,7 +34,7 @@ export class Card {
   constructor(
     public readonly suit: Suit,
     public readonly rank: Rank
-  ) {}
+  ) { }
 
   /**
    * Returns a string representation of the card

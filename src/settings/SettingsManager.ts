@@ -1,44 +1,4 @@
-import type { CardStyleConfig } from '../game/CardStyles';
-import { DEFAULT_CARD_STYLE, CARD_STYLE_PRESETS } from '../game/CardStyles';
-
-/**
- * Card theme types
- */
-export enum CardTheme {
-  CLASSIC = 'classic',
-  MODERN = 'modern',
-  MINIMAL = 'minimal',
-}
-
-/**
- * Theme configuration interface
- */
-export interface ThemeConfig {
-  name: CardTheme;
-  displayName: string;
-  description: string;
-}
-
-/**
- * Available card themes
- */
-export const CARD_THEMES: ThemeConfig[] = [
-  {
-    name: CardTheme.CLASSIC,
-    displayName: 'Classic',
-    description: 'Traditional playing card style',
-  },
-  {
-    name: CardTheme.MODERN,
-    displayName: 'Modern',
-    description: 'Contemporary design with bold colors',
-  },
-  {
-    name: CardTheme.MINIMAL,
-    displayName: 'Minimal',
-    description: 'Clean and simple design',
-  },
-];
+import { CARD_STYLE_PRESETS, CardTheme, DEFAULT_CARD_STYLE, CardStyleConfig } from '../cardStyles';
 
 /**
  * Settings manager for the application
@@ -102,12 +62,26 @@ export class SettingsManager {
   }
 
   /**
-   * Sets the card theme
+   * Sets the card theme and applies matching card style preset
+   * For CUSTOM theme, no preset is applied (user has customized styles)
    */
   setTheme(theme: CardTheme): void {
     this.currentTheme = theme;
+    
+    // Auto-apply matching card style preset for predefined themes
+    // CUSTOM theme preserves user's customized card style
+    if (theme !== CardTheme.CUSTOM) {
+      const presetName = theme.toLowerCase();
+      const preset = CARD_STYLE_PRESETS[presetName];
+      // Only apply if preset exists (enum values match preset keys)
+      if (preset) {
+        this.currentCardStyle = preset;
+      }
+    }
+    
     this.saveSettings();
     this.applyTheme();
+    this.applyCardStyle();
   }
 
   /**
@@ -118,15 +92,17 @@ export class SettingsManager {
     document.body.classList.remove(
       'theme-classic',
       'theme-modern',
-      'theme-minimal'
+      'theme-minimal',
+      'theme-casino',
+      'theme-custom'
     );
-    
+
     // Add current theme class
     document.body.classList.add(`theme-${this.currentTheme}`);
-    
+
     // Dispatch custom event for theme change
-    window.dispatchEvent(new CustomEvent('themechange', { 
-      detail: { theme: this.currentTheme } 
+    window.dispatchEvent(new CustomEvent('themechange', {
+      detail: { theme: this.currentTheme }
     }));
   }
 
@@ -208,8 +184,8 @@ export class SettingsManager {
     }
 
     // Dispatch custom event for card style change
-    window.dispatchEvent(new CustomEvent('cardstylechange', { 
-      detail: { cardStyle: this.currentCardStyle } 
+    window.dispatchEvent(new CustomEvent('cardstylechange', {
+      detail: { cardStyle: this.currentCardStyle }
     }));
   }
 }

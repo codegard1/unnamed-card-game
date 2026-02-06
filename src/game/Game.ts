@@ -1,16 +1,30 @@
 import { Deck } from './Deck';
 import { Player } from './Player';
 import { Card } from './Card';
+import { ITurnOption } from './TurnOptions';
+import { IGameMetadata } from './GameMetadata';
 
 /**
  * Base class for card games
  * This can be extended to implement specific game rules
  */
 export abstract class Game {
+  /** The deck of cards used in the game */
   protected deck: Deck;
+
+  /** Array of all players participating in the game */
   protected players: Player[] = [];
+
+  /** Index of the current player in the players array */
   protected currentPlayerIndex: number = 0;
+
+  /** Flag indicating whether the game is currently in progress */
   protected isGameActive: boolean = false;
+
+  /** Metadata about the game including description, rules, version, creator, and website */
+  protected abstract metadata: IGameMetadata;
+
+
 
   constructor(playerNames: string[]) {
     this.deck = new Deck();
@@ -62,6 +76,11 @@ export abstract class Game {
   abstract getWinner(): Player | Player[] | null;
 
   /**
+   * Determine what options to give the player on their turn. Override in subclasses.
+   */
+  abstract getTurnOptions(player: Player): ITurnOption[];
+
+  /**
    * Returns the current player
    */
   getCurrentPlayer(): Player {
@@ -102,4 +121,5 @@ export abstract class Game {
   endGame(): void {
     this.isGameActive = false;
   }
+
 }
